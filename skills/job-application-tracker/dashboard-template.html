@@ -70,7 +70,7 @@
 .jt-tip{position:absolute;display:none;z-index:30;max-width:19rem;background:var(--jt-tipbg);border:1px solid var(--jt-line2);border-radius:10px;padding:8px 11px;font-size:.8rem;box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;white-space:pre-line}
 .jt-tip b{display:block;font-weight:600;margin-bottom:2px;color:var(--jt-tx1b)}
 .jt-tip span{color:var(--jt-tx3b)}
-.jt-share{margin-left:auto;border-color:var(--jt-accent)}
+.jt-share{border-color:var(--jt-accent);color:var(--jt-tx)}
 .jt-share[hidden]{display:none}
 .jt-modal{position:fixed;inset:0;z-index:50;background:var(--jt-scrim);display:flex;align-items:center;justify-content:center;padding:16px}
 .jt-dlg{background:var(--jt-card);border:1px solid var(--jt-line2);border-radius:16px;max-width:36rem;width:100%;max-height:90vh;overflow:auto;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
@@ -96,7 +96,8 @@
     <div class="jt-kicker">Job search scoreboard &middot; sample data, all companies are made up</div>
     <h1 id="title">Job Application Tracker</h1>
     <p class="jt-take" id="takeaway">Out of <span class="m" data-source="summary" data-row="0" data-field="total">—</span> applications, <span class="m" data-source="summary" data-row="0" data-field="rejected">—</span> said no, <span class="m" data-source="summary" data-row="0" data-field="interviews">—</span> led to an interview, and <span class="m" data-source="summary" data-row="0" data-field="ghosted">—</span> ghosted you. When a company does reply, it takes <span class="m" data-source="summary" data-row="0" data-field="avg_days">—</span> days on average (median <span class="m" data-source="summary" data-row="0" data-field="median_days">—</span>).</p>
-    <div class="jt-ctl" style="margin:12px 0 0"><span class="jt-lab">Theme</span><div class="jt-seg jt-theme" role="group" aria-label="Color theme"><button type="button" data-t="dark" aria-pressed="true">Dark</button><button type="button" data-t="light" aria-pressed="false">Light</button></div><span class="jt-lab" style="margin-left:8px">Labels</span><div class="jt-seg jt-labels" role="group" aria-label="Label style"><button type="button" data-l="spicy" aria-pressed="true">Spicy</button><button type="button" data-l="clean" aria-pressed="false">Clean</button></div><button class="jt-chip jt-share" type="button" data-tip="Share anonymously|Optional. Sends only company, outcome, days to reply and month applied to a public stats project. Nothing else. You see exactly what goes out first.">Share anonymously</button></div>
+    <div class="jt-ctl" style="margin:12px 0 0"><span class="jt-lab">Theme</span><div class="jt-seg jt-theme" role="group" aria-label="Color theme"><button type="button" data-t="dark" aria-pressed="true">Dark</button><button type="button" data-t="light" aria-pressed="false">Light</button></div><span class="jt-lab" style="margin-left:8px">Labels</span><div class="jt-seg jt-labels" role="group" aria-label="Label style"><button type="button" data-l="spicy" aria-pressed="true">Spicy</button><button type="button" data-l="clean" aria-pressed="false">Clean</button></div></div>
+    <div class="jt-ctl" style="margin:10px 0 0"><button class="jt-chip jt-share" type="button" data-tip="Opt-in sharing|Optional. Sends only company, outcome, days to reply and month applied to the Job GhostTracker stats project. Nothing else. You see exactly what goes out first and can say no.">Opt-In to Share Company Response Data with Job GhostTracker</button></div>
     <p class="jt-sub">Applications since <span data-source="summary" data-row="0" data-field="first_applied">—</span>, as of <span data-source="summary" data-row="0" data-field="as_of">—</span>. Hover anything with a dotted feel for the plain-English version.</p>
   </header>
 
@@ -1031,19 +1032,20 @@ dash.calc('companies', {
   function openShare() {
     const rows = shareRows();
     const back = el('div', 'jt-modal'); back.setAttribute('role', 'presentation');
-    const dlg = el('div', 'jt-dlg'); dlg.setAttribute('role', 'dialog'); dlg.setAttribute('aria-modal', 'true'); dlg.setAttribute('aria-label', 'Share anonymously');
+    const dlg = el('div', 'jt-dlg'); dlg.setAttribute('role', 'dialog'); dlg.setAttribute('aria-modal', 'true'); dlg.setAttribute('aria-label', 'Share company response data');
     const close = () => { back.remove(); document.removeEventListener('keydown', onKey); };
     const onKey = (e) => { if (e.key === 'Escape') close(); };
     document.addEventListener('keydown', onKey);
     back.addEventListener('mousedown', (e) => { if (e.target === back) close(); });
-    dlg.appendChild(el('h3', '', 'Share anonymously?'));
-    dlg.appendChild(el('p', '', 'Totally optional. It helps build public stats on which companies reply fast and which ones ghost.'));
+    tip.style.display = 'none';
+    dlg.appendChild(el('h3', '', 'Share company response data?'));
+    dlg.appendChild(el('p', '', 'Totally optional. It adds your results to Job GhostTracker, public stats on which companies reply fast and which ones ghost.'));
     const sent = el('p'); sent.append(el('b', 'yes', 'Sent: '), 'company name, outcome (rejected, interview or no reply), days to reply, the month you applied, and a scrambled fingerprint so the same application is never counted twice.'); dlg.appendChild(sent);
     const never = el('p'); never.append(el('b', 'no', 'Never sent: '), 'your name, email, job titles, exact dates, or any email text.'); dlg.appendChild(never);
     dlg.appendChild(el('p', '', 'Left out: unknown companies, applications with no apply date, and applications still inside the 3 week window. Once sent, it cannot be pulled back, because nothing links it to you.'));
     const msg = el('span', 'jt-msg');
-    const send = el('button', 'jt-btn pri', 'Send ' + fmtN(rows.length) + ' rows'); send.type = 'button'; send.disabled = true;
-    const cancel = el('button', 'jt-btn', 'Close'); cancel.type = 'button'; cancel.addEventListener('click', close);
+    const send = el('button', 'jt-btn pri', 'Confirm: share ' + fmtN(rows.length) + ' rows'); send.type = 'button'; send.disabled = true;
+    const cancel = el('button', 'jt-btn', 'No thanks'); cancel.type = 'button'; cancel.addEventListener('click', close);
     if (!rows.length) {
       dlg.appendChild(el('p', '', 'Nothing to share yet. Replies and 21+ days of silence show up here.'));
     } else {
@@ -1055,14 +1057,12 @@ dash.calc('companies', {
         t.appendChild(tr);
       });
       wrap.appendChild(t); dlg.appendChild(wrap);
-      const lab = el('label', 'jt-ck'), ck = el('input'); ck.type = 'checkbox';
-      lab.append(ck, SHARE_MODE === 'demo' ? 'This is a demo page with made-up data, so nothing will be sent.' : OFFLINE ? 'Sharing is not connected yet, so nothing can be sent from this copy.' : 'I understand and want to share these ' + fmtN(rows.length) + ' rows.');
-      dlg.appendChild(lab);
-      if (SHARE_MODE === 'demo' || OFFLINE) { ck.disabled = true; } else {
-        ck.addEventListener('change', () => { send.disabled = !ck.checked; });
-      }
+      const blocked = SHARE_MODE === 'demo' || OFFLINE;
+      if (blocked) dlg.appendChild(el('p', '', SHARE_MODE === 'demo' ? 'This is a demo page with made-up data, so nothing can be sent.' : 'Sharing is not connected yet, so nothing can be sent from this copy.'));
+      else dlg.appendChild(el('p', '', 'Nothing is sent unless you press Confirm.'));
+      send.disabled = blocked;
       send.addEventListener('click', async () => {
-        send.disabled = true; ck.disabled = true; msg.textContent = 'Sending...';
+        send.disabled = true; cancel.disabled = true; msg.textContent = 'Sending...';
         try {
           let n = 0;
           for (let i = 0; i < rows.length; i += 40) {
@@ -1071,9 +1071,9 @@ dash.calc('companies', {
             n += Math.min(40, rows.length - i);
             msg.textContent = 'Sent ' + fmtN(n) + ' of ' + fmtN(rows.length) + '...';
           }
-          msg.textContent = 'Thank you! Sent ' + fmtN(n) + ' rows.'; cancel.textContent = 'Done';
+          msg.textContent = 'Thank you! Sent ' + fmtN(n) + ' rows.'; cancel.textContent = 'Done'; cancel.disabled = false;
         } catch (err) {
-          msg.textContent = 'Could not send (' + err.message + '). Nothing was changed. Try again later.'; send.disabled = false; ck.disabled = false;
+          msg.textContent = 'Could not send (' + err.message + '). Nothing was changed. Try again later.'; send.disabled = false; cancel.disabled = false;
         }
       });
     }
