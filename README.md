@@ -74,7 +74,7 @@ Need it boring? Say "use clean labels" (Fast, Slow, No response) or flip the tog
 It runs in your own session, so your data goes nowhere. The dashboard has an optional, preview-first button, **Opt-In to Share Company Response Data with Job GhostTracker**, that sends only company, outcome, days to reply and month applied. Nothing is sent unless you confirm. Inside Claude's viewer the send may be blocked, so the dashboard lets you save a file and send from your browser. Full details in [PRIVACY.md](PRIVACY.md).
 
 ## Feedback and support
--**Like it?** [Buy me a tea on Ko-fi](https://ko-fi.com/kaosmith) 🧋. 
+- **Like it?** [Buy me a milk tea on Ko-fi](https://ko-fi.com/kaosmith) 🧋
 - **Something broke or it missed a reply:** [open an issue](https://github.com/KaoNotCow/job-application-ghosting-tracker/issues/new/choose). Sender and subject only, never email contents.
 - **Ideas, questions, or your own dashboard:** [start a discussion](https://github.com/KaoNotCow/job-application-ghosting-tracker/discussions).
 
