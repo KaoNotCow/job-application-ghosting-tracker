@@ -1,6 +1,6 @@
 # Job App Ghost Tracker
 
-**Certified Ghost detector for your job search.** A Claude skill that reads your email, scores every company on how fast it replied, and opens a dashboard (dark or light, your pick) of the evidence.
+Want to see the data on how many companies have replied to your job app with an interview, auto-rejected, or straight-up ghosted you? Introducing... **A Certified Ghost detector for your job search.** This is a Claude (or any AI assistant) skill that reads your email, scores every company on how fast it replied, and displays a gorgeous dashboard (dark or light, your pick) of the evidence. If you opt in, your results join an anonymous pool, so we can eventually publish how long companies really take to reply, and which ones go silent. Let's make ghosting visible.
 
 ![Sample dashboard](assets/dashboard-preview.png)
 
@@ -8,13 +8,25 @@
 
 ## What it does
 
-- Counts your applications, rejections, interviews, and the silence.
+- Scans your email inbox & counts your applications, rejections, interviews, and the silence that hits harder than any dating app.
 - Measures days to reply, per company.
 - Hands out verdicts, from **Speed Demon** to **Certified Ghost**. Two weeks counts as slow, because it is.
+- You can change the verdict titles by telling it so
+- Optional feature to send the data results of the companies and how long they took to respond to a Job App Ghost Tracker database for future public visibility of estimated company average response times.
 
 It only reads your email. It never sends, deletes, or changes anything.
 
 ## Install it
+
+**Claude Skill on the web or desktop (zip, about 3 minutes):**
+
+1. Download [`job-app-ghost-tracker.zip`](job-app-ghost-tracker.zip) from this repo. Do not unzip it.
+2. In Claude, open [**Customize > Skills**](https://claude.ai/customize/skills) and upload the zip. Turn the skill on.
+3. Connect your email to Claude. Gmail is the tested one.
+
+**Then ask:** *"How many companies ghosted me this year?"* You do not need to say the skill's name. It asks which time range to scan (1 month, 6 months, 1 year, or your own dates) and the first time, dark or light.
+
+**Updating:** reinstall the same way. On the web or desktop, delete the old skill first, then upload the new zip.
 
 **Claude Code (two commands):**
 
@@ -25,19 +37,11 @@ It only reads your email. It never sends, deletes, or changes anything.
 
 Run them one at a time. On Claude Code 2.1.275 or newer, one command also works: `/plugin install job-app-ghost-tracker --marketplace KaoNotCow/job-application-ghosting-tracker`. On older versions that form just opens the plugin browser, which will not list this plugin.
 
-**Claude on the web or desktop (zip, about 3 minutes):**
 
-1. Download [`job-app-ghost-tracker.zip`](job-app-ghost-tracker.zip) from this repo. Do not unzip it.
-2. In Claude, open [**Customize > Skills**](https://claude.ai/customize/skills) and upload the zip. Turn the skill on.
-3. Connect your email to Claude. Gmail is the tested one.
 
-**Then ask:** *"How many companies ghosted me this year?"* You do not need to say the skill's name. It asks which time range to scan (1 month, 6 months, 1 year, or your own dates) and the first time, dark or light.
+## Other AI Assistants or Claude Free Plan
 
-**Updating:** reinstall the same way. On the web or desktop, delete the old skill first, then upload the new zip.
-
-## Use it without Claude
-
-ChatGPT, Gemini and friends do not run Claude skills, but the instructions are plain English. Untested, so expect some assembly.
+The instructions are plain English. At the moment, this has been untested, so expect some assembly.
 
 1. Paste [`SKILL.md`](skills/job-app-ghost-tracker/SKILL.md) into your assistant and say: "Follow this. Here are my job application emails." If it cannot read your inbox, export or paste the emails yourself.
 2. Ask it to put the results into the JSON block of [`dashboard-template.html`](skills/job-app-ghost-tracker/dashboard-template.html).
@@ -55,7 +59,7 @@ ChatGPT, Gemini and friends do not run Claude skills, but the instructions are p
 | Left on Read | No reply yet, still waiting |
 | Too Early to Tell | Applied under a week ago |
 
-Need it work-safe? Say "use clean labels" (Fast, Slow, No response) or flip the toggle in the dashboard.
+Need it boring? Say "use clean labels" (Fast, Slow, No response) or flip the toggle in the dashboard.
 
 ## Email support
 
