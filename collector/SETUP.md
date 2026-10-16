@@ -1,6 +1,6 @@
 # Set up the anonymous stats collector
 
-This is the tiny backend behind the dashboard's optional **Share anonymously** button. It runs on Cloudflare's free plan, so it costs $0 at the scale of a hobby project. Setup takes about 10 minutes and you only do it once.
+This is the tiny backend behind the dashboard's optional opt-in share button. It runs on Cloudflare's free plan, so it costs $0 at the scale of a hobby project. Setup takes about 10 minutes and you only do it once.
 
 You need: a free [Cloudflare account](https://dash.cloudflare.com/sign-up) and [Node.js](https://nodejs.org) installed.
 
@@ -39,7 +39,7 @@ In `skills/job-application-tracker/dashboard-template.html`, find this line and 
 const SHARE_URL = 'https://job-tracker-stats.YOUR-NAME.workers.dev';
 ```
 
-Until you change it, the Share button stays hidden. Leave `SHARE_MODE = 'live'` alone. The sample page in `examples/` is set to `'demo'` on purpose, so visitors can preview the button without sending fake data to your database.
+Until you change it, the button is visible but its popup says sharing is not connected and cannot send. Leave `SHARE_MODE = 'live'` alone. The sample page in `examples/` is set to `'demo'` on purpose, so visitors can preview the button without sending fake data to your database.
 
 ## What it collects
 
