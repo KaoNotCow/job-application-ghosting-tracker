@@ -55,11 +55,15 @@ For ranges longer than 2 months, run the three passes one calendar month at a ti
 2. Rejections: "not moving forward" OR "decided not to move forward" OR "move forward with other" OR "other candidates" OR "regret to inform" OR "unable to move forward" OR "position has been filled" OR "unfortunately"
 3. Interviews: interview OR "phone screen" OR "schedule a call" OR "next steps" OR "availability" (exclude the user's own sent mail)
 
+Rejections often hide behind generic subjects such as "Update", "An update on your application", "Thank you for your interest in X" or even "Thank You for Applying to X" (the same subject as the confirmation). Never rely on subject lines. Match on the body wording, and also widen pass 2 with: "decided to move forward with" OR "not to proceed" OR "will not be moving" OR "no longer being considered" OR "more closely aligns" OR "closer alignment" OR "not selected" OR "has been closed" OR "after careful" OR "outcome of your".
+
+**Verification pass (required before reporting any "No reply")**: for every application that ended up with no reply, search the inbox for that company's name (and its ATS sender, such as ashbyhq.com or greenhouse-mail.io) dated after the apply date, with no subject filter and without excluding the Updates category. Open any thread that is not clearly a newsletter or a job alert, and read it. Ghost counts that skip this pass are wrong. A second email from the same sender days later with a different subject is usually the decision.
+
 Search previews can show only part of a thread (Gmail shows just the oldest messages), so open the full thread, in minimal or plain text form, for any thread where the outcome is unclear. Never fetch bodies in bulk.
 
 ## Step 3: Classify each email
 - **Confirmation**: automated "we got your application". Marks an application and its apply date.
-- **Rejection**: any decline, including "role closed" and "after careful consideration".
+- **Rejection**: any decline, including "role closed", "after careful consideration" and "we decided to move forward with other candidates", whatever the subject line says. An email with a generic subject ("Update", "Thank you for your interest") counts as a rejection when its body declines. It is not a confirmation just because it says "thank you for applying".
 - **Interview**: a human or scheduling message inviting the user to talk (recruiter screen, video interview, hiring manager call).
 - **Ignore**: newsletters, job alerts and digests, security or verification codes, "continue your application" reminders, recruiter cold outreach the user did not apply to, and anything the user sent.
 
