@@ -1028,6 +1028,20 @@ dash.calc('companies', {
     return out;
   }
 
+  async function offerSave(act) {
+    if (act.querySelector('.jt-save')) return;
+    let dl = null;
+    try { dl = window.claude && await claude.use('downloads'); } catch (e) { dl = null; }
+    if (!dl) return;
+    const b = el('button', 'jt-btn jt-save', 'Save dashboard file'); b.type = 'button';
+    b.addEventListener('click', async () => {
+      const copy = document.documentElement.cloneNode(true);
+      copy.querySelectorAll('.jt-modal,.jt-tip').forEach((n) => n.remove());
+      try { await dl.save({ filename: 'job-dashboard.html', data: '<!doctype html>' + copy.outerHTML }); } catch (e) { /* viewer declined */ }
+    });
+    act.insertBefore(b, act.children[1] || null);
+  }
+
   function openShare() {
     const rows = shareRows();
     const back = el('div', 'jt-modal'); back.setAttribute('role', 'presentation');
@@ -1072,7 +1086,10 @@ dash.calc('companies', {
           }
           msg.textContent = 'Thank you! Sent ' + fmtN(n) + ' rows.'; cancel.textContent = 'Done'; cancel.disabled = false;
         } catch (err) {
-          msg.textContent = 'Could not send (' + err.message + '). Nothing was changed. Try again later.'; send.disabled = false; cancel.disabled = false;
+          const blocked = err instanceof TypeError;
+          msg.textContent = blocked ? 'This view blocks outside connections, so nothing was sent. Save the dashboard file, open it in your browser, and opt in from there.' : 'Could not send (' + err.message + '). Nothing was changed. Try again later.';
+          send.disabled = false; cancel.disabled = false;
+          if (blocked) offerSave(act);
         }
       });
     }
