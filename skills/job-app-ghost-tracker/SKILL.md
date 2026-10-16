@@ -1,13 +1,13 @@
 ---
-name: job-application-tracker
-description: Scans the user's email inbox (Gmail tested, Outlook and others via fallbacks) to track job applications and report stats (applied, rejected, interviewed, ghosted, average days to reply, which companies), scores how fast each company replied, and shows a dark or light dashboard automatically. Use whenever the user asks about their job search numbers, such as "how many companies ghosted me", "how many rejections this year", "my reply rate", "which jobs haven't replied", "how long do companies take to respond", or mentions a job tracker, even if they do not name this skill.
+name: job-app-ghost-tracker
+description: Job App Ghost Tracker. Scans the user's email inbox (Gmail tested, Outlook and others via fallbacks) to track job applications and report stats (applied, rejected, interviewed, ghosted, average days to reply, which companies), scores how fast each company replied, and shows a dark or light dashboard automatically. Use whenever the user asks about their job search numbers, such as "how many companies ghosted me", "how many rejections this year", "my reply rate", "which jobs haven't replied", "how long do companies take to respond", or mentions a job tracker or ghost tracker, even if they do not name this skill.
 ---
 
-# Job Application Tracker
+# Job App Ghost Tracker
 
 Turn the user's email inbox into a job search scoreboard, with a speed score for every company and a dashboard that opens automatically (dark or light, your pick on first run). Read-only: never send, label, delete, or draft anything.
 
-Created by Kao Smith, kaosmith.com. MIT license.
+Created by Kao Smith, kaosmith.com. MIT license. Privacy policy: PRIVACY.md in the repo.
 
 ## Requirements
 - An email source Claude can search. Gmail is the tested path. Outlook or Microsoft 365 should work through its connector but is untested. Anything else needs one of the fallbacks in Step 0.
@@ -29,14 +29,27 @@ Save the choice as `source` in the `job-tracker.csv` header so the next run does
 - **Label style**: `spicy` (default, funny names) or `clean` (plain names). If the user says they want it work-safe, or will screen-share it, use `clean`.
 - **Ghost cutoff**: days of silence before a company counts as ghosting. Default 21.
 
-## Step 1: Decide the scan window
-- If `job-tracker.csv` exists, read it and only search mail newer than the `last_scan` date stored in it. Do not rescan old mail.
-- If it does not exist, ask for the start of the job search (default: 6 months back, or Jan 1 for "this year" questions). State the window you used in the answer.
+## Step 1: Decide the scan range
+Ask for the time range at the start of every run, unless the user already named one ("this year", "since June 2025", "last 3 months"). Ask with a quick multiple-choice question if the interface has one, otherwise a short list:
+- Last 1 month
+- Last 6 months
+- Last 1 year
+- Custom range (a start date, and optionally an end date)
+
+Accept any phrasing for a custom range and convert it to exact dates. "This year" means Jan 1 to today. If they do not answer, use 6 months.
+
+Rules:
+- Turn the answer into `range_start` and `range_end` (default: today). Say both dates in your answer.
+- An explicit range always wins. Never silently fall back to the saved `last_scan` date when the user asked for a wider window.
+- If `job-tracker.csv` exists, it holds saved rows plus `range_start` (earliest mail already scanned) and `last_scan` (latest). Scan only the gaps: mail from the requested start up to the saved `range_start` when the new start is earlier, and mail newer than `last_scan` up to `range_end`. If the requested range is narrower than what is saved, search nothing and just filter the saved rows to it.
+- After scanning, save the earliest `range_start` now covered, and the new `last_scan`.
 
 ## Step 2: Search the inbox (3 passes)
-Run the same three passes on every provider. The queries below are written in Gmail syntax. For another provider, translate the same keyword groups into its search, filter by received date, skip junk, promotions and social folders, and page through all results.
+Run the same three passes on every provider, over the scan range from Step 1. The queries below are written in Gmail syntax. For another provider, translate the same keyword groups into its search, filter by received date, skip junk, promotions and social folders, and page through all results.
 
-For Gmail: use short keyword queries with `after:YYYY/MM/DD`, exclude `category:promotions` and `category:social`, 50 results per page, and follow `nextPageToken` until results run out or go past the window.
+For Gmail: use short keyword queries with `after:YYYY/MM/DD` and `before:YYYY/MM/DD` (`after` is inclusive, `before` is exclusive), exclude `category:promotions` and `category:social`, 50 results per page, and follow `nextPageToken` until results run out or go past the window.
+
+For ranges longer than 2 months, run the three passes one calendar month at a time and page through every result in each month. One giant query can quietly stop early and miss older mail. If a long range finds nothing in some months, say so plainly (for example, "no application emails Jun 2025 to May 2026") so the user knows the older mail was actually searched.
 
 1. Confirmations: "thank you for applying" OR "thanks for applying" OR "application received" OR "we received your application" OR "application submitted" OR "your application to" OR "application for"
 2. Rejections: "not moving forward" OR "decided not to move forward" OR "move forward with other" OR "other candidates" OR "regret to inform" OR "unable to move forward" OR "position has been filled" OR "unfortunately"
@@ -60,7 +73,7 @@ Group by company plus role.
 - Some confirmations (for example job board apply emails) do not name the company. List them as "Unknown" instead of guessing.
 
 Columns: `company, role, applied_at, first_reply_at, outcome, days_to_reply`
-Outcome is one of `rejected`, `interview`, `no_reply`. Stored in the file header: `last_scan`, `source` and `theme`.
+Outcome is one of `rejected`, `interview`, `no_reply`. Stored in the file header: `range_start`, `last_scan`, `source` and `theme`.
 
 ## Step 5: Compute the stats in code
 Do the arithmetic in a script, never by eye.
@@ -103,22 +116,23 @@ Build and display the dashboard at the end of every run, without being asked, ri
 1. Open `dashboard-template.html` from this skill folder. It is a complete, self-contained dashboard with a dark and a light theme.
 2. Replace the JSON inside `<script id="job-data" type="application/json">` with the user's rows. Each row: `id, company, role, applied_at, replied_at, status, as_of, engaged`. `status` is `Rejected`, `Interview` or `No reply`. Dates are ISO strings, or `null`. `as_of` is the scan time. `engaged` is true only when a company with an unanswered application has also interviewed the user.
 3. Set the theme: in the line `const DEFAULT_THEME = 'dark';` change `'dark'` to the user's saved `theme`.
-4. Remove the "sample data, all companies are made up" line in the header, and the sample banner.
-5. Keep the footer credit "Made with the Job Application Tracker skill, kaosmith.com". Do not remove it.
+4. Remove the "sample data, all companies are made up" text from the header, and remove " (sample)" from the page `<title>`.
+5. Keep the footer credit "Made with the Job App Ghost Tracker skill, kaosmith.com". Do not remove it.
 6. Leave the "Share anonymously" button, `SHARE_URL` and `SHARE_MODE` exactly as the template has them. Do not change the wording of its privacy dialog. The button is always visible. If the collector is not connected yet, its dialog says so and cannot send. Mention once that the button exists, that it is optional, and that it sends only company, outcome, days to reply and month applied, after the user previews every row.
 7. Tell the user it is a snapshot: the email sorting is a judgment call, so it is not live. Offer to refresh it with new mail only.
 
 The page already has quick filters (status, verdict, search, company or application view), sortable columns, hover tooltips, and a Dark/Light theme switch, and a Spicy/Clean label toggle.
 
 ## Step 9: Save and offer a weekly run
-Update `job-tracker.csv` and `last_scan`. Offer once to schedule a weekly refresh (a scheduled task that only reads new mail since `last_scan`). Do not offer again if they decline.
+Update `job-tracker.csv`, `range_start` and `last_scan`. Offer once to schedule a weekly refresh (a scheduled task that only reads new mail since `last_scan`, and skips the range question by reusing the saved range through today). Do not offer again if they decline.
 
 ## Privacy rules
 - Everything stays in the user's own session. Never send inbox contents, company lists, or stats to any outside service yourself. The only exception is the dashboard's optional Share anonymously button, which the user clicks and previews. Never click it for them, and never post to its address.
 - If the user wants to share results, offer a version with company names removed.
+- The full policy is in PRIVACY.md in the repo. Link it if the user asks how their data is handled.
 - Do not include the user's email address, name, or salary details in anything saved or shared.
 
 ## Token efficiency
-- Incremental scans only (new mail since `last_scan`).
+- Incremental scans only: scan the gaps between the requested range and what is already saved.
 - Search results are usually enough; fetch full threads for ambiguous emails only.
 - Compute once in code, then answer follow-up questions from the saved file instead of re-searching Gmail.

@@ -1,0 +1,16 @@
+{
+  "name": "kaosmith",
+  "owner": {
+    "name": "Kao Smith",
+    "url": "https://kaosmith.com"
+  },
+  "plugins": [
+    {
+      "name": "job-app-ghost-tracker",
+      "source": "./",
+      "description": "Job App Ghost Tracker: scores how fast companies reply to your applications and opens a dashboard.",
+      "version": "1.1.0"
+    }
+  ],
+  "description": "Claude plugins by Kao Smith."
+}

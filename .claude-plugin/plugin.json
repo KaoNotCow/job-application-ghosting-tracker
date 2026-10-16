@@ -1,0 +1,10 @@
+{
+  "name": "job-app-ghost-tracker",
+  "version": "1.1.0",
+  "description": "Reads your email, scores every company on how fast it replied to your job applications, and opens a dark or light dashboard. Read-only. Optional anonymous sharing.",
+  "author": { "name": "Kao Smith", "url": "https://kaosmith.com" },
+  "homepage": "https://github.com/KaoNotCow/job-application-ghosting-tracker",
+  "repository": "https://github.com/KaoNotCow/job-application-ghosting-tracker",
+  "license": "MIT",
+  "keywords": ["job-search", "gmail", "dashboard", "ghosting"]
+}

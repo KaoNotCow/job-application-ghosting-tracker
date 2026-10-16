@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Job Application Tracker (sample)</title><style>html,body{margin:0;background:#14161c}body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}:root{--font-anthropic-sans:system-ui,-apple-system,"Segoe UI",sans-serif;--font-anthropic-serif:Georgia,"Times New Roman",serif}.dash-skeleton{}</style></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Job App Ghost Tracker (sample)</title><style>html,body{margin:0;background:#14161c}body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}:root{--font-anthropic-sans:system-ui,-apple-system,"Segoe UI",sans-serif;--font-anthropic-serif:Georgia,"Times New Roman",serif}.dash-skeleton{}</style></head><body>
 <div id="dash-root">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
@@ -94,7 +94,7 @@
 <div class="jt-wrap">
   <header>
     <div class="jt-kicker">Job search scoreboard &middot; sample data, all companies are made up</div>
-    <h1 id="title">Job Application Tracker</h1>
+    <h1 id="title">Job App Ghost Tracker</h1>
     <p class="jt-take" id="takeaway">Out of <span class="m" data-source="summary" data-row="0" data-field="total">—</span> applications, <span class="m" data-source="summary" data-row="0" data-field="rejected">—</span> said no, <span class="m" data-source="summary" data-row="0" data-field="interviews">—</span> led to an interview, and <span class="m" data-source="summary" data-row="0" data-field="ghosted">—</span> ghosted you. When a company does reply, it takes <span class="m" data-source="summary" data-row="0" data-field="avg_days">—</span> days on average (median <span class="m" data-source="summary" data-row="0" data-field="median_days">—</span>).</p>
     <div class="jt-ctl" style="margin:12px 0 0"><span class="jt-lab">Theme</span><div class="jt-seg jt-theme" role="group" aria-label="Color theme"><button type="button" data-t="dark" aria-pressed="true">Dark</button><button type="button" data-t="light" aria-pressed="false">Light</button></div><span class="jt-lab" style="margin-left:8px">Labels</span><div class="jt-seg jt-labels" role="group" aria-label="Label style"><button type="button" data-l="spicy" aria-pressed="true">Spicy</button><button type="button" data-l="clean" aria-pressed="false">Clean</button></div></div>
     <div class="jt-ctl" style="margin:10px 0 0"><button class="jt-chip jt-share" type="button" data-tip="Opt-in sharing|Optional. Sends only company, outcome, days to reply and month applied to the Job GhostTracker stats project. Nothing else. You see exactly what goes out first and can say no.">Opt-In to Share Company Response Data with Job GhostTracker</button></div>
@@ -170,7 +170,7 @@
     </details>
   </section>
   <p class="jt-foot">Source: confirmation and decision emails in Gmail, sorted by Claude. This is a snapshot, not a live query: ask Claude to refresh it and it rescans only new mail.</p>
-<p class="jt-foot" style="text-align:right">Made with the Job Application Tracker skill &middot; <a href="https://kaosmith.com" style="color:var(--jt-link);text-decoration:none">kaosmith.com</a></p>
+<p class="jt-foot" style="text-align:right">Made with the Job App Ghost Tracker skill &middot; <a href="https://kaosmith.com" style="color:var(--jt-link);text-decoration:none">kaosmith.com</a></p>
 </div>
 </div>
 <script id="job-data" type="application/json">[
@@ -1056,6 +1056,7 @@ dash.calc('companies', {
     const sent = el('p'); sent.append(el('b', 'yes', 'Sent: '), 'company name, outcome (rejected, interview or no reply), days to reply, the month you applied, and a scrambled fingerprint so the same application is never counted twice.'); dlg.appendChild(sent);
     const never = el('p'); never.append(el('b', 'no', 'Never sent: '), 'your name, email, job titles, exact dates, or any email text.'); dlg.appendChild(never);
     dlg.appendChild(el('p', '', 'Left out: unknown companies, applications with no apply date, and applications still inside the 3 week window. Once sent, it cannot be pulled back, because nothing links it to you.'));
+    const pv = el('p'), pa = el('a', '', 'Read the privacy policy'); pa.href = 'https://github.com/KaoNotCow/job-application-ghosting-tracker/blob/main/PRIVACY.md'; pa.target = '_blank'; pa.rel = 'noopener noreferrer'; pa.style.color = 'var(--jt-link)'; pv.appendChild(pa); dlg.appendChild(pv);
     const msg = el('span', 'jt-msg');
     const send = el('button', 'jt-btn pri', 'Confirm: share ' + fmtN(rows.length) + ' rows'); send.type = 'button'; send.disabled = true;
     const cancel = el('button', 'jt-btn', 'No thanks'); cancel.type = 'button'; cancel.addEventListener('click', close);

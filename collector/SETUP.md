@@ -33,7 +33,7 @@ You should see `{"companies":[], ...}`. An empty list is correct, nothing has be
 
 ## 3. Point the button at it
 
-In `skills/job-application-tracker/dashboard-template.html`, set your address:
+In `skills/job-app-ghost-tracker/dashboard-template.html`, set your address:
 
 ```js
 const SHARE_URL = 'https://job-tracker-stats.yourname.workers.dev';
@@ -61,7 +61,7 @@ wrangler d1 execute job-tracker-stats --remote --command "SELECT COUNT(*) AS app
 `GET /stats` returns per-company numbers: applications, replies, interviews, median days to reply, and ghost rate. A company only shows up once at least 5 applications are in (`MIN_N` in `wrangler.toml`), so one person's story is never exposed. You can fetch that address from a webpage or chart.
 
 When you publish, be clear about what it is:
-- Say "self-reported by users of the Job Application Tracker", not "verified".
+- Say "self-reported by users of the Job App Ghost Tracker", not "verified".
 - Show the number of applications behind every figure.
 - Anyone can send fake rows. The minimum count and the median soften that, but they do not remove it. Check for odd spikes before publishing a ranking.
 
