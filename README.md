@@ -16,6 +16,8 @@ It only reads your email. It never sends, deletes, or changes anything.
 
 ## Use it with Claude (about 3 minutes)
 
+You need a Pro, Max, Team or Enterprise plan, with code execution and file creation switched on in Settings > Capabilities. No Cowork required. On the free plan, use the paste route in the next section.
+
 1. Download [`job-application-tracker.zip`](job-application-tracker.zip) from this repo. Do not unzip it.
 2. In Claude (web or desktop), open [**Customize > Skills**](https://claude.ai/customize/skills) and upload the zip. Turn the skill on.
 3. Connect your email to Claude. Gmail is the tested one.
