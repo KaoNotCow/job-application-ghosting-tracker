@@ -55,7 +55,7 @@ Need it work-safe? Say "use clean labels" (Fast, Slow, No response) or flip the 
 
 ## Privacy
 
-It runs in your own session, so your data goes nowhere. The dashboard can include an optional, preview-first **Share anonymously** button that sends only company, outcome, days to reply and month applied to a stats collector. It appears only once a collector address is set in the template.
+It runs in your own session, so your data goes nowhere. The dashboard can include an optional, preview-first **Share anonymously** button that sends only company, outcome, days to reply and month applied to a stats collector. It is always visible, but it can only send once a collector address is set in the template (see `collector/SETUP.md`).
 
 ## For tinkerers
 
