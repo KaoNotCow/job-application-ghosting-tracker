@@ -125,7 +125,7 @@
 
   <section class="jt-card" id="board">
     <h2>Company scoreboard</h2>
-    <p class="jt-note">Every company and application, scored on how fast they answered. Sort by any column.</p>
+    <p class="jt-note">Every company and application, scored on how fast they answered. By company counts each company once, even with several roles, so its totals are lower than the application totals up top. Sort by any column.</p>
     <div class="jt-ctl">
       <div class="jt-seg jt-view" role="group" aria-label="View">
         <button type="button" data-view="co" aria-pressed="true">By company</button>
@@ -914,12 +914,12 @@ dash.calc('companies', {
     const statusPass = (r) => state.status === 'All' || (v === 'app' ? r.status === state.status : state.status === 'Rejected' ? r.rejected > 0 : state.status === 'Interview' ? r.interviews > 0 : r.no_reply > 0);
     const base = all.filter((r) => statusPass(r) && (!q || (r.company + ' ' + (r.role || '')).toLowerCase().includes(q)));
 
-    const sc1 = root.querySelector('.jt-status'); sc1.replaceChildren(el('span', 'jt-lab', 'Status'));
+    const sc1 = root.querySelector('.jt-status'); sc1.replaceChildren(el('span', 'jt-lab', v === 'app' ? 'Status (applications)' : 'Status (companies)'));
     ['All', 'Rejected', 'Interview', 'No reply'].forEach((s) => {
       const b = el('button', 'jt-chip', s); b.type = 'button'; b.setAttribute('aria-pressed', String(state.status === s));
       b.addEventListener('click', () => { state.status = s; drawBoard(); }); sc1.appendChild(b);
     });
-    const tc = root.querySelector('.jt-tierchips'); tc.replaceChildren(el('span', 'jt-lab', 'Verdict'));
+    const tc = root.querySelector('.jt-tierchips'); tc.replaceChildren(el('span', 'jt-lab', v === 'app' ? 'Verdict (applications)' : 'Verdict (companies)'));
     const mk = (name, n) => {
       const b = el('button', 'jt-chip'); b.type = 'button'; b.setAttribute('aria-pressed', String(state.tier === name));
       if (name !== 'All') { const d = el('span', 'dot'); d.style.background = COL[name]; b.appendChild(d); }
