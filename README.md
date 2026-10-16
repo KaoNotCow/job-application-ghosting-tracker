@@ -16,13 +16,14 @@ It only reads your email. It never sends, deletes, or changes anything.
 
 ## Install it
 
-**Claude Code (one command):**
+**Claude Code (two commands):**
 
 ```
-/plugin install job-app-ghost-tracker --marketplace KaoNotCow/job-application-ghosting-tracker
+/plugin marketplace add KaoNotCow/job-application-ghosting-tracker
+/plugin install job-app-ghost-tracker@kaosmith
 ```
 
-Older version? Run `/plugin marketplace add KaoNotCow/job-application-ghosting-tracker` first, then `/plugin install job-app-ghost-tracker@kaosmith`.
+Run them one at a time. On Claude Code 2.1.275 or newer, one command also works: `/plugin install job-app-ghost-tracker --marketplace KaoNotCow/job-application-ghosting-tracker`. On older versions that form just opens the plugin browser, which will not list this plugin.
 
 **Claude on the web or desktop (zip, about 3 minutes):**
 
