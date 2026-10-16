@@ -1,0 +1,492 @@
+[
+ {
+  "id": "s01",
+  "company": "Pixelpine",
+  "role": "Senior Product Manager",
+  "applied_at": "2026-08-03T17:51:28Z",
+  "replied_at": "2026-08-04T23:05:52Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s02",
+  "company": "Northwind Labs",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-07-15T20:24:14Z",
+  "replied_at": "2026-07-17T09:08:28Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s03",
+  "company": "Brightloop",
+  "role": "Product Manager II",
+  "applied_at": "2026-06-09T03:58:05Z",
+  "replied_at": "2026-06-10T09:27:00Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s04",
+  "company": "Fableware",
+  "role": "Group Product Manager",
+  "applied_at": "2026-08-30T03:38:43Z",
+  "replied_at": "2026-09-09T14:54:48Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s05",
+  "company": "Quokka Pay",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-09-11T01:49:43Z",
+  "replied_at": "2026-10-16T11:17:01Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s06",
+  "company": "Lumenbase",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-06-21T22:53:38Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s07",
+  "company": "Tangent Health",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-10-10T21:39:30Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s08",
+  "company": "Orbitly",
+  "role": "Group Product Manager",
+  "applied_at": "2026-10-10T18:32:26Z",
+  "replied_at": "2026-10-14T11:08:09Z",
+  "status": "Interview",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s09",
+  "company": "Cobalt & Co",
+  "role": "Product Manager II",
+  "applied_at": "2026-10-09T13:13:32Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s10",
+  "company": "Marigold AI",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-07-31T09:02:52Z",
+  "replied_at": "2026-08-06T02:12:41Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s11",
+  "company": "Stackhaven",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-08-02T02:31:39Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s12",
+  "company": "Driftwood Travel",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-06-08T11:57:10Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s13",
+  "company": "Hexwell",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-07-18T17:53:02Z",
+  "replied_at": "2026-07-26T23:07:07Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s14",
+  "company": "Plumline",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-07-25T23:44:18Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s15",
+  "company": "Sprocketry",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-09-23T14:05:43Z",
+  "replied_at": "2026-10-05T15:07:40Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s16",
+  "company": "Nimbus Ledger",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-07-19T12:51:25Z",
+  "replied_at": "2026-08-19T07:41:07Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s17",
+  "company": "Kettle Fintech",
+  "role": "Group Product Manager",
+  "applied_at": "2026-09-26T13:40:34Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s18",
+  "company": "Voltpost",
+  "role": "Product Manager II",
+  "applied_at": "2026-07-24T06:18:11Z",
+  "replied_at": "2026-07-30T17:26:19Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s19",
+  "company": "Wanderwell",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-06-28T11:14:33Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s20",
+  "company": "Beacon Rent",
+  "role": "Senior Product Manager",
+  "applied_at": "2026-09-06T07:44:40Z",
+  "replied_at": "2026-09-07T02:06:40Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s21",
+  "company": "Copperfield Data",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-08-09T14:07:42Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s22",
+  "company": "Zestly",
+  "role": "Product Manager II",
+  "applied_at": "2026-09-26T13:53:47Z",
+  "replied_at": "2026-10-02T03:59:44Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s23",
+  "company": "Mosaic Mobility",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-08-24T14:15:15Z",
+  "replied_at": "2026-08-26T13:04:21Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s24",
+  "company": "Ironleaf",
+  "role": "Product Manager, Growth",
+  "applied_at": "2026-09-26T03:28:49Z",
+  "replied_at": "2026-09-28T05:03:05Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s25",
+  "company": "Tidepool Games",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-07-02T10:31:07Z",
+  "replied_at": "2026-07-10T00:35:51Z",
+  "status": "Interview",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s26",
+  "company": "Halcyon Cloud",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-08-16T11:09:13Z",
+  "replied_at": "2026-10-04T06:37:25Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s27",
+  "company": "Rivet",
+  "role": "Product Manager II",
+  "applied_at": "2026-08-17T19:05:59Z",
+  "replied_at": "2026-08-23T01:25:16Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s28",
+  "company": "Paperkite",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-07-04T06:36:44Z",
+  "replied_at": "2026-07-06T11:24:39Z",
+  "status": "Interview",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s29",
+  "company": "Gridwise",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-10-05T03:01:21Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s30",
+  "company": "Oakline",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-09-12T21:57:51Z",
+  "replied_at": "2026-09-17T14:06:26Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s31",
+  "company": "Bluebird Bank",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-07-03T03:46:05Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s32",
+  "company": "Fernhill",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-09-12T22:43:54Z",
+  "replied_at": "2026-09-25T01:53:14Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s33",
+  "company": "Lanternly",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-06-18T20:34:00Z",
+  "replied_at": "2026-07-27T22:09:58Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s34",
+  "company": "Cartwheel Labs",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-09-12T14:37:55Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s35",
+  "company": "Mintwork",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-06-16T04:43:57Z",
+  "replied_at": "2026-07-16T23:50:07Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s36",
+  "company": "Sundial Health",
+  "role": "Product Manager II",
+  "applied_at": "2026-09-29T02:28:01Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s37",
+  "company": "Gadgetry",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-07-29T23:01:56Z",
+  "replied_at": "2026-08-03T01:46:09Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s38",
+  "company": "Pebble Pay",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-06-17T08:45:58Z",
+  "replied_at": "2026-06-18T04:28:54Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s39",
+  "company": "Harbor & Hue",
+  "role": "Product Manager, Growth",
+  "applied_at": "2026-06-25T18:20:46Z",
+  "replied_at": "2026-07-17T06:42:42Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s40",
+  "company": "Skyloom",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-07-04T22:30:35Z",
+  "replied_at": "2026-07-09T21:51:46Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s41",
+  "company": "Northwind Labs",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-08-27T17:10:33Z",
+  "replied_at": "2026-08-29T19:42:49Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s42",
+  "company": "Tidepool Games",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-08-08T11:24:49Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s43",
+  "company": "Fernhill",
+  "role": "Group Product Manager",
+  "applied_at": "2026-08-22T12:35:05Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s44",
+  "company": "Brightloop",
+  "role": "Group Product Manager",
+  "applied_at": "2026-10-07T00:48:32Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s45",
+  "company": "Rivet",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-09-19T00:44:57Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s46",
+  "company": "Lumenbase",
+  "role": "Product Manager, Growth",
+  "applied_at": "2026-09-19T23:28:38Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s47",
+  "company": "Sprocketry",
+  "role": "Staff PM, Platform",
+  "applied_at": null,
+  "replied_at": "2026-08-30T22:51:30Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s48",
+  "company": "Gridwise",
+  "role": "Senior PM, Marketplace",
+  "applied_at": null,
+  "replied_at": "2026-08-05T06:05:34Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s49",
+  "company": "Mosaic Mobility",
+  "role": "Staff PM, Platform",
+  "applied_at": null,
+  "replied_at": "2026-08-18T08:20:22Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ }
+]

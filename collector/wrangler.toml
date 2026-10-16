@@ -1,0 +1,16 @@
+name = "job-tracker-stats"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "job-tracker-stats"
+database_id = "PASTE-YOUR-DATABASE-ID-HERE"
+
+[vars]
+MIN_N = "5"            # a company only appears in public stats after this many applications
+DAILY_ROW_CAP = "20000" # flood guard, keeps you far inside the free tier
+
+# Keep logs off so the Worker never records request details.
+[observability]
+enabled = false

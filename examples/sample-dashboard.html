@@ -1,0 +1,1068 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Job Application Tracker (sample)</title><style>html,body{margin:0;background:#14161c}body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}:root{--font-anthropic-sans:system-ui,-apple-system,"Segoe UI",sans-serif;--font-anthropic-serif:Georgia,"Times New Roman",serif}.dash-skeleton{}</style></head><body>
+<div id="dash-root">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+#dash-root{--dash-gutter:0}
+.jt{position:relative;box-sizing:border-box;min-height:100vh;background:#14161c;color:#e4e7ee;font-family:var(--font-anthropic-sans);padding:clamp(14px,3vw,30px);line-height:1.45}
+.jt *{box-sizing:border-box}
+.jt-wrap{max-width:1200px;margin:0 auto}
+.jt-kicker{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#7f879a}
+.jt h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:2rem;margin:.15rem 0 .5rem;letter-spacing:-.01em;color:#eef0f5}
+.jt-take{color:#b4bacb;font-size:1.02rem;max-width:64rem;margin:0}
+.jt .jt-take .m{color:#f0f2f7;font-weight:600;font-variant-numeric:tabular-nums}
+.jt-sub{color:#7f879a;font-size:.8rem;margin:.55rem 0 0}
+.jt-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:12px;margin:22px 0 14px}
+.jt-tile{background:#1b1e26;border:1px solid #2c313e;border-radius:14px;padding:14px 16px;min-height:5.6rem;cursor:help}
+.jt-tile .l{font-size:.78rem;color:#9aa2b4}
+.jt-tile .v{font-family:var(--font-anthropic-serif);font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.15;margin-top:2px;color:#eef0f5}
+.jt-tile.bad .v{color:#ff7f98}.jt-tile.good .v{color:#7ddc8f}.jt-tile.wait .v{color:#9db3ff}.jt-tile.warn .v{color:#f2c15b}
+.jt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr));gap:14px;margin-bottom:14px}
+.jt-card{background:#1b1e26;border:1px solid #2c313e;border-radius:14px;padding:18px 18px 16px;container-type:inline-size;min-width:0}
+.jt-card h2{font-size:1.02rem;font-weight:500;margin:0 0 2px;color:#eef0f5}
+.jt-note{font-size:.8rem;color:#8c94a7;margin:0 0 14px}
+.jt-tiers{min-height:13rem}
+.jt-trow{display:grid;grid-template-columns:minmax(8.5rem,12rem) 1fr 2.4rem;gap:10px;align-items:center;padding:6px 0;cursor:pointer}
+.jt-trow:hover .jt-track{background:#2a2f3b}
+.jt-tl{font-size:.88rem;display:flex;align-items:center;white-space:nowrap}
+.jt .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;flex:none}
+.jt-track{height:12px;border-radius:7px;background:#242834;overflow:hidden}
+.jt-fill{height:100%;border-radius:7px}
+.jt-n{font-variant-numeric:tabular-nums;text-align:right;font-size:.9rem;color:#cfd4e0}
+.jt-days{min-height:28rem}
+.jt svg text{font-family:var(--font-anthropic-sans)}
+.jt-ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-bottom:10px}
+.jt-seg{display:inline-flex;background:#14161c;border:1px solid #2c313e;border-radius:999px;padding:3px}
+.jt-seg button{font:inherit;font-size:.82rem;color:#9aa2b4;background:none;border:0;border-radius:999px;padding:5px 14px;cursor:pointer}
+.jt-seg button[aria-pressed=true]{background:#2e3550;color:#fff}
+.jt-q{font:inherit;font-size:.85rem;color:#e4e7ee;background:#14161c;border:1px solid #2c313e;border-radius:999px;padding:6px 14px;min-width:12rem;outline:none}
+.jt-q:focus{border-color:#5b6cb0}
+.jt-q::placeholder{color:#6f7788}
+.jt-chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px;align-items:center}
+.jt-lab{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#6f7788;margin-right:4px}
+.jt-chip{font:inherit;font-size:.8rem;color:#c3c9d8;background:#222632;border:1px solid #2c313e;border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center}
+.jt-chip:hover{border-color:#4b5575}
+.jt-chip[aria-pressed=true]{background:#2e3550;border-color:#5b6cb0;color:#fff}
+.jt-chip .n{opacity:.6;margin-left:7px;font-variant-numeric:tabular-nums}
+.jt-scroll{max-height:36rem;overflow:auto;border:1px solid #242834;border-radius:10px}
+.jt-t{width:100%;border-collapse:collapse;font-size:.88rem}
+.jt-t[hidden]{display:none}
+.jt-t th{position:sticky;top:0;z-index:2;background:#1f232d;text-align:left;padding:9px 12px;border-bottom:1px solid #2c313e;color:#9aa2b4;font-weight:500;font-size:.78rem;white-space:nowrap}
+.jt-t th button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.jt-t th button:hover{color:#e4e7ee}
+.jt-t th[aria-sort=ascending] button:after{content:" \2191"}
+.jt-t th[aria-sort=descending] button:after{content:" \2193"}
+.jt-t td{padding:9px 12px;border-bottom:1px solid #222632;vertical-align:middle}
+.jt-t tr:hover td{background:#20242e}
+.jt-t .num{font-variant-numeric:tabular-nums;text-align:right}
+.jt-t th.num{text-align:right}
+.jt-badge{display:inline-flex;align-items:center;padding:3px 11px;border-radius:999px;font-size:.78rem;font-weight:500;white-space:nowrap;cursor:help;border:1px solid color-mix(in srgb,currentColor 38%,transparent);background:color-mix(in srgb,currentColor 13%,transparent)}
+.jt-sbar{display:inline-block;width:54px;height:6px;border-radius:4px;background:#2a2f3b;vertical-align:middle;margin-left:9px;overflow:hidden}
+.jt-sbar span{display:block;height:100%;border-radius:4px}
+.jt-count{font-size:.78rem;color:#7f879a;margin:9px 2px 0}
+.jt-empty{padding:26px;text-align:center;color:#7f879a;font-size:.9rem}
+.jt-legend{margin-top:14px;font-size:.84rem;color:#a4abbd}
+.jt-legend summary{cursor:pointer;color:#9db3ff}
+.jt-rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:8px 18px;margin-top:10px}
+.jt-rules div{display:flex;gap:8px;align-items:baseline}
+.jt-foot{color:#6f7788;font-size:.76rem;margin:16px 2px 0}
+.jt-tip{position:absolute;display:none;z-index:30;max-width:19rem;background:#262b38;border:1px solid #3a4153;border-radius:10px;padding:8px 11px;font-size:.8rem;box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;white-space:pre-line}
+.jt-tip b{display:block;font-weight:600;margin-bottom:2px;color:#f0f2f7}
+.jt-tip span{color:#b9c0d0}
+.jt-share{margin-left:auto}
+.jt-share[hidden]{display:none}
+.jt-modal{position:fixed;inset:0;z-index:50;background:rgba(8,9,13,.72);display:flex;align-items:center;justify-content:center;padding:16px}
+.jt-dlg{background:#1b1e26;border:1px solid #3a4153;border-radius:16px;max-width:36rem;width:100%;max-height:90vh;overflow:auto;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.jt-dlg h3{font-family:var(--font-anthropic-serif);font-weight:400;font-size:1.4rem;margin:0 0 6px;color:#eef0f5}
+.jt-dlg p{margin:6px 0;color:#b4bacb;font-size:.9rem}
+.jt-dlg .yes{color:#7ddc8f}.jt-dlg .no{color:#ff9db0}
+.jt-prev{max-height:11rem;overflow:auto;border:1px solid #2c313e;border-radius:10px;margin:12px 0}
+.jt-prev table{width:100%;border-collapse:collapse;font-size:.8rem}
+.jt-prev th{position:sticky;top:0;background:#1f232d;text-align:left;padding:6px 10px;color:#9aa2b4;font-weight:500}
+.jt-prev td{padding:5px 10px;border-top:1px solid #222632;color:#cfd4e0}
+.jt-act{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap;align-items:center}
+.jt-btn{font:inherit;font-size:.88rem;border-radius:999px;padding:7px 18px;cursor:pointer;border:1px solid #3a4153;background:#222632;color:#e4e7ee}
+.jt-btn.pri{background:#3a4a8a;border-color:#5b6cb0;color:#fff}
+.jt-btn[disabled]{opacity:.45;cursor:not-allowed}
+.jt-ck{display:flex;gap:9px;align-items:flex-start;font-size:.88rem;color:#cfd4e0;margin-top:10px}
+.jt-msg{font-size:.85rem;color:#9db3ff;margin-right:auto}
+
+@container (max-width:560px){.jt-hide-sm{display:none}}
+</style>
+<div class="jt">
+<div class="jt-wrap">
+  <header>
+    <div class="jt-kicker">Job search scoreboard &middot; sample data, all companies are made up</div>
+    <h1 id="title">Job Application Tracker</h1>
+    <p class="jt-take" id="takeaway">Out of <span class="m" data-source="summary" data-row="0" data-field="total">-</span> applications, <span class="m" data-source="summary" data-row="0" data-field="rejected">-</span> said no, <span class="m" data-source="summary" data-row="0" data-field="interviews">-</span> led to an interview, and <span class="m" data-source="summary" data-row="0" data-field="ghosted">-</span> ghosted you. When a company does reply, it takes <span class="m" data-source="summary" data-row="0" data-field="avg_days">-</span> days on average (median <span class="m" data-source="summary" data-row="0" data-field="median_days">-</span>).</p>
+    <div class="jt-ctl" style="margin:12px 0 0"><span class="jt-lab">Labels</span><div class="jt-seg jt-labels" role="group" aria-label="Label style"><button type="button" data-l="spicy" aria-pressed="true">Spicy</button><button type="button" data-l="clean" aria-pressed="false">Clean</button></div><button class="jt-chip jt-share" type="button" data-tip="Share anonymously|Optional. Sends only company, outcome, days to reply and month applied to a public stats project. Nothing else. You see exactly what goes out first.">Share anonymously</button></div>
+    <p class="jt-sub">Applications since <span data-source="summary" data-row="0" data-field="first_applied">-</span>, as of <span data-source="summary" data-row="0" data-field="as_of">-</span>. Hover anything with a dotted feel for the plain-English version.</p>
+  </header>
+
+  <section class="jt-tiles" id="tiles">
+    <div class="jt-tile" data-tip="Applications|Every job application found in your Gmail, one per role."><div class="l">Applications</div><div class="v"><span data-source="summary" data-row="0" data-field="total">-</span></div></div>
+    <div class="jt-tile warn" data-tip="Rejected|The company sent a no."><div class="l">Rejected</div><div class="v"><span data-source="summary" data-row="0" data-field="rejected">-</span></div></div>
+    <div class="jt-tile good" data-tip="Interviews|A real person wanted to talk to you. Green flag."><div class="l">Interviews</div><div class="v"><span data-source="summary" data-row="0" data-field="interviews">-</span></div></div>
+    <div class="jt-tile bad" data-tip="Ghosted|Did not respond. Nothing for 3 or more weeks after you applied."><div class="l">Ghosted</div><div class="v"><span data-source="summary" data-row="0" data-field="ghosted">-</span></div></div>
+    <div class="jt-tile wait" data-tip="Still waiting|No reply yet, but it has been under 3 weeks, so they get the benefit of the doubt."><div class="l">Still waiting</div><div class="v"><span data-source="summary" data-row="0" data-field="waiting">-</span></div></div>
+    <div class="jt-tile" data-tip="Average days to reply|Average time from applying to the first answer, only counting companies that replied."><div class="l">Avg days to reply</div><div class="v"><span data-source="summary" data-row="0" data-field="avg_days">-</span></div></div>
+  </section>
+
+  <section class="jt-grid">
+    <div class="jt-card">
+      <h2>How fast do they reply?</h2>
+      <p class="jt-note">Applications by verdict. Hover for what it means, click to filter the table.</p>
+      <div class="jt-tiers dash-skeleton" data-source="tiers"></div>
+    </div>
+    <div class="jt-card">
+      <h2>Days to reply, every response</h2>
+      <p class="jt-note">One bar per reply, fastest first. Dashed lines mark one week and the two-week limit.</p>
+      <div class="jt-days dash-skeleton" data-source="scored"></div>
+    </div>
+  </section>
+
+  <section class="jt-card" id="board">
+    <h2>Company scoreboard</h2>
+    <p class="jt-note">Every company and application, scored on how fast they answered. Sort by any column.</p>
+    <div class="jt-ctl">
+      <div class="jt-seg jt-view" role="group" aria-label="View">
+        <button type="button" data-view="co" aria-pressed="true">By company</button>
+        <button type="button" data-view="app" aria-pressed="false">By application</button>
+      </div>
+      <input class="jt-q" type="search" placeholder="Search company or role" aria-label="Search company or role">
+    </div>
+    <div class="jt-chips jt-status"></div>
+    <div class="jt-chips jt-tierchips"></div>
+    <div class="jt-scroll">
+      <table class="jt-t" data-view="co" data-source="companies" data-row-key="company">
+        <thead><tr>
+          <th data-field="company"><button type="button" class="jt-sort" data-k="company">Company</button></th>
+          <th class="num jt-hide-sm" data-field="apps"><button type="button" class="jt-sort" data-k="apps">Apps</button></th>
+          <th class="num jt-hide-sm" data-field="rejected"><button type="button" class="jt-sort" data-k="rejected">Rejected</button></th>
+          <th class="num jt-hide-sm" data-field="interviews"><button type="button" class="jt-sort" data-k="interviews">Interviews</button></th>
+          <th class="num" data-field="no_reply"><button type="button" class="jt-sort" data-k="no_reply">No reply</button></th>
+          <th class="num" data-field="avg_days" data-tip="Avg days|Average days from applying to the first answer. Blank means they never answered."><button type="button" class="jt-sort" data-k="avg_days">Avg days</button></th>
+          <th class="num" data-field="score" data-tip="Speed score|0 to 100. 100 means a reply within a day. Loses 5 points per extra day and hits 0 at 3 weeks. Interviews get +15. Ghosting scores 0."><button type="button" class="jt-sort" data-k="score">Speed score</button></th>
+          <th data-field="tier"><button type="button" class="jt-sort" data-k="tier">Verdict</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+      <table class="jt-t" data-view="app" data-source="scored" data-row-key="id" hidden>
+        <thead><tr>
+          <th data-field="company"><button type="button" class="jt-sort" data-k="company">Company</button></th>
+          <th class="jt-hide-sm" data-field="role"><button type="button" class="jt-sort" data-k="role">Role</button></th>
+          <th class="jt-hide-sm" data-field="applied"><button type="button" class="jt-sort" data-k="applied">Applied</button></th>
+          <th data-field="status"><button type="button" class="jt-sort" data-k="status">Status</button></th>
+          <th class="num" data-field="days" data-tip="Days to reply|Days from applying to the first answer. Blank means no answer, or the original confirmation email was not found."><button type="button" class="jt-sort" data-k="days">Days</button></th>
+          <th class="num" data-field="score" data-tip="Speed score|0 to 100. 100 means a reply within a day. Loses 5 points per extra day and hits 0 at 3 weeks. Interviews get +15. Ghosting scores 0."><button type="button" class="jt-sort" data-k="score">Speed score</button></th>
+          <th data-field="tier"><button type="button" class="jt-sort" data-k="tier">Verdict</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="jt-count"></p>
+    <details class="jt-legend">
+      <summary>How verdicts and scores work</summary>
+      <div class="jt-rules"></div>
+      <p style="margin:12px 0 0">Speed score: 100 for a reply within a day, minus 5 points for every extra day, down to 0 at three weeks. Interviews get +15. Ghosted applications score 0. A company's score averages its replies. Frontline Education is held at "Left on Read" for its unanswered applications because it did interview you.</p>
+    </details>
+  </section>
+  <p class="jt-foot">Source: confirmation and decision emails in Gmail, sorted by Claude. This is a snapshot, not a live query: ask Claude to refresh it and it rescans only new mail.</p>
+<p class="jt-foot" style="text-align:right">Made with the Job Application Tracker skill &middot; <a href="https://kaosmith.com" style="color:#9db3ff;text-decoration:none">kaosmith.com</a></p>
+</div>
+</div>
+<script id="job-data" type="application/json">[
+ {
+  "id": "s01",
+  "company": "Pixelpine",
+  "role": "Senior Product Manager",
+  "applied_at": "2026-08-03T17:51:28Z",
+  "replied_at": "2026-08-04T23:05:52Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s02",
+  "company": "Northwind Labs",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-07-15T20:24:14Z",
+  "replied_at": "2026-07-17T09:08:28Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s03",
+  "company": "Brightloop",
+  "role": "Product Manager II",
+  "applied_at": "2026-06-09T03:58:05Z",
+  "replied_at": "2026-06-10T09:27:00Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s04",
+  "company": "Fableware",
+  "role": "Group Product Manager",
+  "applied_at": "2026-08-30T03:38:43Z",
+  "replied_at": "2026-09-09T14:54:48Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s05",
+  "company": "Quokka Pay",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-09-11T01:49:43Z",
+  "replied_at": "2026-10-16T11:17:01Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s06",
+  "company": "Lumenbase",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-06-21T22:53:38Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s07",
+  "company": "Tangent Health",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-10-10T21:39:30Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s08",
+  "company": "Orbitly",
+  "role": "Group Product Manager",
+  "applied_at": "2026-10-10T18:32:26Z",
+  "replied_at": "2026-10-14T11:08:09Z",
+  "status": "Interview",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s09",
+  "company": "Cobalt & Co",
+  "role": "Product Manager II",
+  "applied_at": "2026-10-09T13:13:32Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s10",
+  "company": "Marigold AI",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-07-31T09:02:52Z",
+  "replied_at": "2026-08-06T02:12:41Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s11",
+  "company": "Stackhaven",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-08-02T02:31:39Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s12",
+  "company": "Driftwood Travel",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-06-08T11:57:10Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s13",
+  "company": "Hexwell",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-07-18T17:53:02Z",
+  "replied_at": "2026-07-26T23:07:07Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s14",
+  "company": "Plumline",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-07-25T23:44:18Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s15",
+  "company": "Sprocketry",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-09-23T14:05:43Z",
+  "replied_at": "2026-10-05T15:07:40Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s16",
+  "company": "Nimbus Ledger",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-07-19T12:51:25Z",
+  "replied_at": "2026-08-19T07:41:07Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s17",
+  "company": "Kettle Fintech",
+  "role": "Group Product Manager",
+  "applied_at": "2026-09-26T13:40:34Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s18",
+  "company": "Voltpost",
+  "role": "Product Manager II",
+  "applied_at": "2026-07-24T06:18:11Z",
+  "replied_at": "2026-07-30T17:26:19Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s19",
+  "company": "Wanderwell",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-06-28T11:14:33Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s20",
+  "company": "Beacon Rent",
+  "role": "Senior Product Manager",
+  "applied_at": "2026-09-06T07:44:40Z",
+  "replied_at": "2026-09-07T02:06:40Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s21",
+  "company": "Copperfield Data",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-08-09T14:07:42Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s22",
+  "company": "Zestly",
+  "role": "Product Manager II",
+  "applied_at": "2026-09-26T13:53:47Z",
+  "replied_at": "2026-10-02T03:59:44Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s23",
+  "company": "Mosaic Mobility",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-08-24T14:15:15Z",
+  "replied_at": "2026-08-26T13:04:21Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s24",
+  "company": "Ironleaf",
+  "role": "Product Manager, Growth",
+  "applied_at": "2026-09-26T03:28:49Z",
+  "replied_at": "2026-09-28T05:03:05Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s25",
+  "company": "Tidepool Games",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-07-02T10:31:07Z",
+  "replied_at": "2026-07-10T00:35:51Z",
+  "status": "Interview",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s26",
+  "company": "Halcyon Cloud",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-08-16T11:09:13Z",
+  "replied_at": "2026-10-04T06:37:25Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s27",
+  "company": "Rivet",
+  "role": "Product Manager II",
+  "applied_at": "2026-08-17T19:05:59Z",
+  "replied_at": "2026-08-23T01:25:16Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s28",
+  "company": "Paperkite",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-07-04T06:36:44Z",
+  "replied_at": "2026-07-06T11:24:39Z",
+  "status": "Interview",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s29",
+  "company": "Gridwise",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-10-05T03:01:21Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s30",
+  "company": "Oakline",
+  "role": "Product Lead, Payments",
+  "applied_at": "2026-09-12T21:57:51Z",
+  "replied_at": "2026-09-17T14:06:26Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s31",
+  "company": "Bluebird Bank",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-07-03T03:46:05Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s32",
+  "company": "Fernhill",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-09-12T22:43:54Z",
+  "replied_at": "2026-09-25T01:53:14Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s33",
+  "company": "Lanternly",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-06-18T20:34:00Z",
+  "replied_at": "2026-07-27T22:09:58Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s34",
+  "company": "Cartwheel Labs",
+  "role": "Senior PM, Data",
+  "applied_at": "2026-09-12T14:37:55Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s35",
+  "company": "Mintwork",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-06-16T04:43:57Z",
+  "replied_at": "2026-07-16T23:50:07Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s36",
+  "company": "Sundial Health",
+  "role": "Product Manager II",
+  "applied_at": "2026-09-29T02:28:01Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s37",
+  "company": "Gadgetry",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-07-29T23:01:56Z",
+  "replied_at": "2026-08-03T01:46:09Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s38",
+  "company": "Pebble Pay",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-06-17T08:45:58Z",
+  "replied_at": "2026-06-18T04:28:54Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s39",
+  "company": "Harbor & Hue",
+  "role": "Product Manager, Growth",
+  "applied_at": "2026-06-25T18:20:46Z",
+  "replied_at": "2026-07-17T06:42:42Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s40",
+  "company": "Skyloom",
+  "role": "Principal Product Manager",
+  "applied_at": "2026-07-04T22:30:35Z",
+  "replied_at": "2026-07-09T21:51:46Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s41",
+  "company": "Northwind Labs",
+  "role": "Senior PM, Marketplace",
+  "applied_at": "2026-08-27T17:10:33Z",
+  "replied_at": "2026-08-29T19:42:49Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s42",
+  "company": "Tidepool Games",
+  "role": "Staff PM, Platform",
+  "applied_at": "2026-08-08T11:24:49Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s43",
+  "company": "Fernhill",
+  "role": "Group Product Manager",
+  "applied_at": "2026-08-22T12:35:05Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s44",
+  "company": "Brightloop",
+  "role": "Group Product Manager",
+  "applied_at": "2026-10-07T00:48:32Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s45",
+  "company": "Rivet",
+  "role": "Lead PM, Consumer",
+  "applied_at": "2026-09-19T00:44:57Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s46",
+  "company": "Lumenbase",
+  "role": "Product Manager, Growth",
+  "applied_at": "2026-09-19T23:28:38Z",
+  "replied_at": null,
+  "status": "No reply",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s47",
+  "company": "Sprocketry",
+  "role": "Staff PM, Platform",
+  "applied_at": null,
+  "replied_at": "2026-08-30T22:51:30Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s48",
+  "company": "Gridwise",
+  "role": "Senior PM, Marketplace",
+  "applied_at": null,
+  "replied_at": "2026-08-05T06:05:34Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ },
+ {
+  "id": "s49",
+  "company": "Mosaic Mobility",
+  "role": "Staff PM, Platform",
+  "applied_at": null,
+  "replied_at": "2026-08-18T08:20:22Z",
+  "status": "Rejected",
+  "as_of": "2026-10-16T18:56:00Z",
+  "engaged": false
+ }
+]</script>
+<script>
+window.dash=(function(){
+  var ds={apps:{status:'ok',data:JSON.parse(document.getElementById('job-data').textContent)}},calcs={},cbs=[];
+  function get(id){ if(ds[id]) return ds[id]; var c=calcs[id]; var a=c.inputs.map(function(i){return get(i).data;}); ds[id]={status:'ok',data:c.fn.apply(null,a)}; return ds[id]; }
+  return {calc:function(id,o){calcs[id]=o;}, data:function(id){return ds[id]||{status:'loading',data:[]};}, onData:function(cb){ Object.keys(calcs).forEach(get); cb(); }};
+})();
+</script>
+<script>
+dash.calc('scored', {
+  title: 'Scored applications',
+  description: 'Each application with days to reply, speed score and verdict.',
+  inputs: ['apps'],
+  fn: (apps) => apps.map((r) => {
+    const t = (s) => Date.parse(s), D = 86400000;
+    const days = r.replied_at && r.applied_at ? Math.round((t(r.replied_at) - t(r.applied_at)) / D * 10) / 10 : null;
+    const age = r.applied_at ? (t(r.as_of) - t(r.applied_at)) / D : null;
+    let tier, score = null;
+    if (days !== null) {
+      score = Math.max(0, Math.min(100, Math.round(100 - (days - 1) * 5)));
+      if (r.status === 'Interview') score = Math.min(100, score + 15);
+      tier = days <= 2 ? 'Speed Demon' : days <= 7 ? 'Respectful' : days <= 14 ? 'Slow Burn' : 'Emotionally Unavailable';
+    } else if (r.replied_at) tier = 'Mystery Timing';
+    else if (age >= 21 && !r.engaged) { tier = 'Certified Ghost'; score = 0; }
+    else tier = age >= 7 ? 'Left on Read' : 'Too Early to Tell';
+    return { id: r.id, company: r.company, role: r.role, applied: r.applied_at ? r.applied_at.slice(0, 10) : '', status: r.status, days, score, tier };
+  })
+});
+dash.calc('summary', {
+  title: 'Headline numbers',
+  description: 'Counts, average and median days to reply.',
+  inputs: ['scored', 'apps'],
+  fn: (scored, apps) => {
+    const d = scored.map((r) => r.days).filter((x) => x !== null).sort((a, b) => a - b);
+    const m = d.length >> 1;
+    const n = (s) => scored.filter((r) => r.status === s).length;
+    const tiers = (...t) => scored.filter((r) => t.includes(r.tier)).length;
+    const first = apps.map((r) => r.applied_at).filter(Boolean).sort()[0];
+    return [{
+      total: scored.length, rejected: n('Rejected'), interviews: n('Interview'),
+      ghosted: tiers('Certified Ghost'), waiting: tiers('Left on Read', 'Too Early to Tell'),
+      avg_days: Math.round(d.reduce((a, b) => a + b, 0) / d.length * 10) / 10,
+      median_days: d.length % 2 ? d[m] : Math.round((d[m - 1] + d[m]) * 5) / 10,
+      first_applied: first.slice(0, 10), as_of: apps[0].as_of.slice(0, 10)
+    }];
+  }
+});
+dash.calc('tiers', {
+  title: 'Applications by verdict',
+  description: 'How many applications fall in each verdict.',
+  inputs: ['scored'],
+  fn: (scored) => ['Speed Demon', 'Respectful', 'Slow Burn', 'Emotionally Unavailable', 'Certified Ghost', 'Left on Read', 'Too Early to Tell', 'Mystery Timing']
+    .map((tier) => ({ tier, count: scored.filter((r) => r.tier === tier).length })).filter((r) => r.count > 0)
+});
+dash.calc('companies', {
+  title: 'Company scores',
+  description: 'One row per company: replies, average days, speed score, verdict.',
+  inputs: ['scored'],
+  fn: (scored) => {
+    const tierOf = (d) => d <= 2 ? 'Speed Demon' : d <= 7 ? 'Respectful' : d <= 14 ? 'Slow Burn' : 'Emotionally Unavailable';
+    const by = new Map();
+    scored.forEach((r) => { if (!by.has(r.company)) by.set(r.company, []); by.get(r.company).push(r); });
+    return [...by].map(([company, rs]) => {
+      const dd = rs.map((r) => r.days).filter((x) => x !== null);
+      const ks = rs.filter((r) => r.days !== null).map((r) => r.score);
+      const ghosted = rs.filter((r) => r.tier === 'Certified Ghost').length;
+      const avg = dd.length ? Math.round(dd.reduce((a, b) => a + b, 0) / dd.length * 10) / 10 : null;
+      const tier = avg !== null ? tierOf(avg) : ghosted ? 'Certified Ghost' : rs.some((r) => r.tier === 'Left on Read') ? 'Left on Read' : rs.some((r) => r.tier === 'Mystery Timing') ? 'Mystery Timing' : 'Too Early to Tell';
+      const score = ks.length ? Math.round(ks.reduce((a, b) => a + b, 0) / ks.length) : ghosted ? 0 : null;
+      return { company, apps: rs.length, rejected: rs.filter((r) => r.status === 'Rejected').length, interviews: rs.filter((r) => r.status === 'Interview').length, no_reply: rs.filter((r) => r.status === 'No reply').length, avg_days: avg, score, tier };
+    });
+  }
+});
+
+(function () {
+  const TIERS = ['Speed Demon', 'Respectful', 'Slow Burn', 'Emotionally Unavailable', 'Certified Ghost', 'Left on Read', 'Too Early to Tell', 'Mystery Timing'];
+  const COL = { 'Speed Demon': '#5ee0b3', 'Respectful': '#9ad77f', 'Slow Burn': '#f2c15b', 'Emotionally Unavailable': '#f28b5c', 'Certified Ghost': '#ff5f7e', 'Left on Read': '#8da6ff', 'Too Early to Tell': '#8b93a7', 'Mystery Timing': '#b79cff' };
+  const MEAN = {
+    'Speed Demon': 'Replied within 2 days. Fast and respectful of your time.',
+    'Respectful': 'Replied within a week. Normal and decent.',
+    'Slow Burn': 'Slow to respond. Took 1 to 2 weeks to get back to you.',
+    'Emotionally Unavailable': 'Very slow to respond. Took more than 2 weeks.',
+    'Certified Ghost': 'Did not respond. Nothing for 3 or more weeks after you applied.',
+    'Left on Read': 'No reply yet. It has been 1 to 3 weeks, so still waiting.',
+    'Too Early to Tell': 'Applied less than a week ago. Too soon to judge.',
+    'Mystery Timing': 'They said no, but the original confirmation email was not found, so the reply time is unknown.'
+  };
+  const CLEAN = { 'Speed Demon': 'Fast', 'Respectful': 'On time', 'Slow Burn': 'Slow', 'Emotionally Unavailable': 'Very slow', 'Certified Ghost': 'No response', 'Left on Read': 'Still waiting', 'Too Early to Tell': 'Too early', 'Mystery Timing': 'Unknown timing' };
+  const disp = (t) => (state.labels === 'clean' ? CLEAN[t] : t);
+  const RULE = { 'Speed Demon': '2 days or less', 'Respectful': '3 to 7 days', 'Slow Burn': '8 to 14 days', 'Emotionally Unavailable': 'over 14 days', 'Certified Ghost': 'no reply after 21 days', 'Left on Read': 'no reply, 7 to 21 days', 'Too Early to Tell': 'applied under 7 days ago', 'Mystery Timing': 'rejected, apply date unknown' };
+  const STATUS_TIP = { 'Rejected': 'They said no.', 'Interview': 'A real person wanted to talk to you. Green flag.', 'No reply': 'No answer yet. The verdict shows how bad the silence is.' };
+  const STATUS_COL = { 'Rejected': '#e8899b', 'Interview': '#7ddc8f', 'No reply': '#9aa2b4' };
+  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+  const fmtN = d3.format(',');
+  const fmtD = (s) => s ? d3.utcFormat('%b %-d')(new Date(s)) : '-';
+  const fmtDY = (s) => s ? d3.utcFormat('%b %-d, %Y')(new Date(s)) : '-';
+  const scoreColor = (s) => s >= 70 ? '#5ee0b3' : s >= 35 ? '#f2c15b' : '#ff5f7e';
+  const root = document.querySelector('.jt');
+  const state = { labels: 'spicy', view: 'co', status: 'All', tier: 'All', q: '', sort: { co: { k: 'score', dir: -1 }, app: { k: 'applied', dir: -1 } } };
+
+  const tip = el('div', 'jt-tip');
+  root.appendChild(tip);
+  root.addEventListener('mousemove', (e) => {
+    const t = e.target.closest('[data-tip]');
+    if (!t) { tip.style.display = 'none'; return; }
+    const parts = t.getAttribute('data-tip').split('|');
+    tip.replaceChildren(el('b', '', parts[0]), el('span', '', parts.slice(1).join('|')));
+    tip.style.display = 'block';
+    const r = root.getBoundingClientRect(), tw = tip.offsetWidth;
+    let x = e.clientX - r.left + 14;
+    if (x + tw > r.width - 8) x = e.clientX - r.left - tw - 14;
+    tip.style.left = Math.max(8, x) + 'px';
+    tip.style.top = (e.clientY - r.top + 16) + 'px';
+  });
+  root.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+
+  function buildRules() {
+    const rules = root.querySelector('.jt-rules'); rules.replaceChildren();
+    TIERS.forEach((t) => {
+      const row = el('div'); const b = el('span', 'jt-badge', disp(t)); b.style.color = COL[t];
+      row.append(b, el('span', '', RULE[t])); rules.appendChild(row);
+    });
+  }
+  buildRules();
+
+  function fillMarks() {
+    const s = dash.data('summary');
+    root.querySelectorAll('[data-source="summary"]').forEach((n) => {
+      const f = n.dataset.field;
+      if (s.status !== 'ok' || !s.data.length) { n.textContent = '-'; return; }
+      const v = s.data[0][f];
+      n.textContent = (f === 'as_of' || f === 'first_applied') ? fmtDY(v) : f.endsWith('_days') ? v.toFixed(1) : fmtN(v);
+    });
+  }
+
+  function drawTiers() {
+    const box = root.querySelector('.jt-tiers'), t = dash.data('tiers');
+    box.replaceChildren();
+    if (t.status !== 'ok') return;
+    box.classList.remove('dash-skeleton');
+    const max = d3.max(t.data, (d) => d.count);
+    t.data.forEach((d) => {
+      const row = el('div', 'jt-trow');
+      row.dataset.tip = disp(d.tier) + '|' + MEAN[d.tier] + '\nClick to filter the table.';
+      const lab = el('div', 'jt-tl'), dot = el('span', 'dot'); dot.style.background = COL[d.tier]; lab.append(dot, disp(d.tier));
+      const tr = el('div', 'jt-track'), f = el('div', 'jt-fill'); f.style.width = (100 * d.count / max) + '%'; f.style.background = COL[d.tier]; tr.appendChild(f);
+      row.append(lab, tr, el('div', 'jt-n', fmtN(d.count)));
+      row.addEventListener('click', () => {
+        state.view = 'app'; state.tier = d.tier; state.status = 'All';
+        drawBoard();
+        document.getElementById('board').scrollIntoView({ behavior: 'smooth' });
+      });
+      box.appendChild(row);
+    });
+  }
+
+  function drawDays() {
+    const box = root.querySelector('.jt-days'), s = dash.data('scored');
+    box.replaceChildren();
+    if (s.status !== 'ok') return;
+    box.classList.remove('dash-skeleton');
+    const rows = s.data.filter((r) => r.days !== null).sort((a, b) => a.days - b.days);
+    const W = Math.max(box.clientWidth, 300), rh = 21, top = 28, bot = 26, cap = 45, mr = 56;
+    const H = top + rows.length * rh + bot;
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', '0 0 ' + W + ' ' + H).attr('role', 'img').attr('aria-label', 'Days to first reply for each application');
+    const probe = svg.append('text').attr('font-size', 12);
+    let mw = 0;
+    rows.forEach((r) => { probe.text(r.company); mw = Math.max(mw, probe.node().getComputedTextLength()); });
+    probe.remove();
+    const ml = Math.ceil(mw) + 14;
+    const x = d3.scaleLinear([0, cap], [ml, W - mr]);
+    [0, 7, 14, 21, 28, 35, 42].forEach((t) => {
+      svg.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top - 6).attr('y2', H - bot + 2).attr('stroke', '#2a2f3b').attr('stroke-width', 1);
+      svg.append('text').attr('x', x(t)).attr('y', H - 8).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#7f879a').text(t + 'd');
+    });
+    [[7, '#8da6ff', 'end', '1 week'], [14, '#f28b5c', 'start', '2 weeks: too slow']].forEach((l) => {
+      svg.append('line').attr('x1', x(l[0])).attr('x2', x(l[0])).attr('y1', top - 8).attr('y2', H - bot + 2).attr('stroke', l[1]).attr('stroke-width', 1.5).attr('stroke-dasharray', '4 4');
+      svg.append('text').attr('x', x(l[0]) + (l[2] === 'end' ? -5 : 5)).attr('y', top - 12).attr('text-anchor', l[2]).attr('font-size', 11).attr('fill', l[1]).text(l[3]);
+    });
+    rows.forEach((r, i) => {
+      const y = top + i * rh;
+      const g = svg.append('g');
+      g.append('rect').attr('x', 0).attr('y', y).attr('width', W).attr('height', rh).attr('fill', 'transparent').attr('data-tip', r.company + '|' + r.role + '\n' + r.days.toFixed(1) + ' days to reply. ' + MEAN[r.tier]);
+      g.append('text').attr('x', ml - 8).attr('y', y + rh / 2 + 4).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#cfd4e0').style('pointer-events', 'none').text(r.company);
+      const w = Math.max(3, x(Math.min(r.days, cap)) - ml);
+      g.append('rect').attr('x', ml).attr('y', y + 4).attr('width', w).attr('height', rh - 8).attr('rx', 4).attr('fill', COL[r.tier]).style('pointer-events', 'none');
+      g.append('text').attr('x', ml + w + 6).attr('y', y + rh / 2 + 4).attr('font-size', 11).attr('fill', '#9aa2b4').style('pointer-events', 'none').text(r.days.toFixed(1) + 'd' + (r.days > cap ? ' ▸' : ''));
+    });
+  }
+
+  const COLS = {
+    co: ['company', 'apps', 'rejected', 'interviews', 'no_reply', 'avg_days', 'score', 'tier'],
+    app: ['company', 'role', 'applied', 'status', 'days', 'score', 'tier']
+  };
+  const HIDE = { co: ['apps', 'rejected', 'interviews'], app: ['role', 'applied'] };
+  const NUM = ['apps', 'rejected', 'interviews', 'no_reply', 'avg_days', 'days', 'score'];
+
+  function cell(td, k, x) {
+    if (NUM.includes(k)) td.classList.add('num');
+    if (k === 'tier') {
+      const b = el('span', 'jt-badge', disp(x)); b.style.color = COL[x]; b.dataset.tip = disp(x) + '|' + MEAN[x]; td.appendChild(b);
+    } else if (k === 'status') {
+      const b = el('span', 'jt-badge', x); b.style.color = STATUS_COL[x]; b.dataset.tip = x + '|' + STATUS_TIP[x]; td.appendChild(b);
+    } else if (k === 'score') {
+      if (x == null) { td.textContent = '-'; return; }
+      td.append(String(x));
+      const bar = el('span', 'jt-sbar'), f = el('span'); f.style.width = x + '%'; f.style.background = scoreColor(x); bar.appendChild(f); td.appendChild(bar);
+    } else if (k === 'days' || k === 'avg_days') {
+      td.textContent = x == null ? '-' : x.toFixed(1);
+    } else if (k === 'applied') {
+      td.textContent = fmtD(x);
+    } else {
+      td.textContent = x == null || x === '' ? '-' : x;
+    }
+  }
+
+  function drawBoard() {
+    const v = state.view;
+    const sc = dash.data('scored'), co = dash.data('companies');
+    const ok = sc.status === 'ok' && co.status === 'ok';
+    root.querySelectorAll('.jt-view button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === v)));
+    root.querySelectorAll('.jt-t').forEach((t) => { t.hidden = t.dataset.view !== v; });
+    const all = ok ? (v === 'app' ? sc.data : co.data) : [];
+    const q = state.q.trim().toLowerCase();
+    const statusPass = (r) => state.status === 'All' || (v === 'app' ? r.status === state.status : state.status === 'Rejected' ? r.rejected > 0 : state.status === 'Interview' ? r.interviews > 0 : r.no_reply > 0);
+    const base = all.filter((r) => statusPass(r) && (!q || (r.company + ' ' + (r.role || '')).toLowerCase().includes(q)));
+
+    const sc1 = root.querySelector('.jt-status'); sc1.replaceChildren(el('span', 'jt-lab', 'Status'));
+    ['All', 'Rejected', 'Interview', 'No reply'].forEach((s) => {
+      const b = el('button', 'jt-chip', s); b.type = 'button'; b.setAttribute('aria-pressed', String(state.status === s));
+      b.addEventListener('click', () => { state.status = s; drawBoard(); }); sc1.appendChild(b);
+    });
+    const tc = root.querySelector('.jt-tierchips'); tc.replaceChildren(el('span', 'jt-lab', 'Verdict'));
+    const mk = (name, n) => {
+      const b = el('button', 'jt-chip'); b.type = 'button'; b.setAttribute('aria-pressed', String(state.tier === name));
+      if (name !== 'All') { const d = el('span', 'dot'); d.style.background = COL[name]; b.appendChild(d); }
+      b.append(name === 'All' ? name : disp(name)); b.appendChild(el('span', 'n', fmtN(n)));
+      if (name !== 'All') b.dataset.tip = disp(name) + '|' + MEAN[name];
+      b.addEventListener('click', () => { state.tier = name; drawBoard(); }); tc.appendChild(b);
+    };
+    mk('All', base.length);
+    TIERS.forEach((t) => { const n = base.filter((r) => r.tier === t).length; if (n) mk(t, n); });
+
+    const { k, dir } = state.sort[v];
+    const val = (r) => { const x = r[k]; if (k === 'tier') return TIERS.indexOf(x); return x === '' ? null : x; };
+    const rows = base.filter((r) => state.tier === 'All' || r.tier === state.tier).sort((a, b) => {
+      const x = val(a), y = val(b);
+      if (x == null && y == null) return 0; if (x == null) return 1; if (y == null) return -1;
+      return (typeof x === 'number' ? x - y : String(x).localeCompare(y)) * dir;
+    });
+
+    const table = root.querySelector('.jt-t[data-view="' + v + '"]');
+    table.querySelectorAll('th').forEach((th) => th.setAttribute('aria-sort', th.dataset.field === k ? (dir > 0 ? 'ascending' : 'descending') : 'none'));
+    const body = table.tBodies[0]; body.replaceChildren();
+    rows.forEach((r) => {
+      const tr = document.createElement('tr'); tr.dataset.key = v === 'app' ? r.id : r.company;
+      COLS[v].forEach((c) => {
+        const td = document.createElement('td');
+        if (HIDE[v].includes(c)) td.classList.add('jt-hide-sm');
+        cell(td, c, r[c]); tr.appendChild(td);
+      });
+      body.appendChild(tr);
+    });
+    root.querySelector('.jt-count').textContent = ok ? 'Showing ' + fmtN(rows.length) + ' of ' + fmtN(all.length) + (v === 'app' ? ' applications' : ' companies') : '';
+    if (ok && !rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = COLS[v].length; td.className = 'jt-empty'; td.textContent = 'Nothing matches those filters.'; tr.appendChild(td); body.appendChild(tr); }
+  }
+
+  root.querySelectorAll('.jt-labels button').forEach((b) => b.addEventListener('click', () => {
+    state.labels = b.dataset.l;
+    root.querySelectorAll('.jt-labels button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.l === state.labels)));
+    buildRules(); drawTiers(); drawDays(); drawBoard();
+  }));
+  root.querySelectorAll('.jt-view button').forEach((b) => b.addEventListener('click', () => { state.view = b.dataset.view; drawBoard(); }));
+  root.querySelector('.jt-q').addEventListener('input', (e) => { state.q = e.target.value; drawBoard(); });
+  root.querySelectorAll('.jt-sort').forEach((b) => b.addEventListener('click', () => {
+    const v = b.closest('table').dataset.view, kk = b.dataset.k, s = state.sort[v];
+    if (s.k === kk) s.dir *= -1; else state.sort[v] = { k: kk, dir: ['company', 'role', 'tier', 'status'].includes(kk) ? 1 : -1 };
+    drawBoard();
+  }));
+
+
+  // ---- Optional anonymous sharing -------------------------------------------
+  // Set SHARE_URL to your own collector (see collector/SETUP.md). While it still
+  // contains YOUR-NAME the Share button stays hidden. SHARE_MODE 'demo' previews only.
+  const SHARE_URL = 'https://job-tracker-stats.YOUR-NAME.workers.dev';
+  const SHARE_MODE = 'demo';
+
+  function sha256hex(str) {
+    const K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+    const bytes = Array.from(new TextEncoder().encode(str));
+    const bitLen = bytes.length * 8;
+    bytes.push(0x80);
+    while (bytes.length % 64 !== 56) bytes.push(0);
+    for (let i = 7; i >= 0; i--) bytes.push(i >= 4 ? 0 : (bitLen >>> (i * 8)) & 255);
+    const H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+    const rotr = (x, n) => (x >>> n) | (x << (32 - n));
+    for (let o = 0; o < bytes.length; o += 64) {
+      const w = new Array(64);
+      for (let i = 0; i < 16; i++) w[i] = (bytes[o+4*i] << 24) | (bytes[o+4*i+1] << 16) | (bytes[o+4*i+2] << 8) | bytes[o+4*i+3];
+      for (let i = 16; i < 64; i++) {
+        const s0 = rotr(w[i-15], 7) ^ rotr(w[i-15], 18) ^ (w[i-15] >>> 3);
+        const s1 = rotr(w[i-2], 17) ^ rotr(w[i-2], 19) ^ (w[i-2] >>> 10);
+        w[i] = (w[i-16] + s0 + w[i-7] + s1) | 0;
+      }
+      let [a,b,c,d,e,f,g,h] = H;
+      for (let i = 0; i < 64; i++) {
+        const t1 = (h + (rotr(e,6) ^ rotr(e,11) ^ rotr(e,25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) | 0;
+        const t2 = ((rotr(a,2) ^ rotr(a,13) ^ rotr(a,22)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+        h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
+      }
+      H[0] = (H[0]+a)|0; H[1] = (H[1]+b)|0; H[2] = (H[2]+c)|0; H[3] = (H[3]+d)|0; H[4] = (H[4]+e)|0; H[5] = (H[5]+f)|0; H[6] = (H[6]+g)|0; H[7] = (H[7]+h)|0;
+    }
+    return H.map((x) => (x >>> 0).toString(16).padStart(8, '0')).join('');
+  }
+
+  // Only finished stories are shared: replied applications, and silence of 21+ days.
+  function shareRows() {
+    const a = dash.data('apps');
+    if (a.status !== 'ok') return [];
+    const out = [];
+    a.data.forEach((r) => {
+      const company = String(r.company || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+      if (company.length < 2 || /^unknown/i.test(company) || !r.applied_at) return;
+      const ap = Date.parse(r.applied_at), asof = Date.parse(r.as_of);
+      if (!isFinite(ap) || !isFinite(asof)) return;
+      const row = { k: sha256hex('jat1|' + company.toLowerCase() + '|' + String(r.role || '').toLowerCase() + '|' + r.applied_at), company, outcome: '', days: null, waited: null, month: r.applied_at.slice(0, 7) };
+      if (r.status === 'No reply') {
+        const w = Math.floor((asof - ap) / 86400000);
+        if (r.engaged || w < 21) return;
+        row.outcome = 'no_reply'; row.waited = Math.min(365, w);
+      } else {
+        if (!r.replied_at) return;
+        const d = (Date.parse(r.replied_at) - ap) / 86400000;
+        if (!isFinite(d) || d < 0 || d > 365) return;
+        row.outcome = r.status === 'Interview' ? 'interview' : 'rejected'; row.days = Math.round(d * 10) / 10;
+      }
+      out.push(row);
+    });
+    return out;
+  }
+
+  function openShare() {
+    const rows = shareRows();
+    const back = el('div', 'jt-modal'); back.setAttribute('role', 'presentation');
+    const dlg = el('div', 'jt-dlg'); dlg.setAttribute('role', 'dialog'); dlg.setAttribute('aria-modal', 'true'); dlg.setAttribute('aria-label', 'Share anonymously');
+    const close = () => { back.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    back.addEventListener('mousedown', (e) => { if (e.target === back) close(); });
+    dlg.appendChild(el('h3', '', 'Share anonymously?'));
+    dlg.appendChild(el('p', '', 'Totally optional. It helps build public stats on which companies reply fast and which ones ghost.'));
+    const sent = el('p'); sent.append(el('b', 'yes', 'Sent: '), 'company name, outcome (rejected, interview or no reply), days to reply, the month you applied, and a scrambled fingerprint so the same application is never counted twice.'); dlg.appendChild(sent);
+    const never = el('p'); never.append(el('b', 'no', 'Never sent: '), 'your name, email, job titles, exact dates, or any email text.'); dlg.appendChild(never);
+    dlg.appendChild(el('p', '', 'Left out: unknown companies, applications with no apply date, and applications still inside the 3 week window. Once sent, it cannot be pulled back, because nothing links it to you.'));
+    const msg = el('span', 'jt-msg');
+    const send = el('button', 'jt-btn pri', 'Send ' + fmtN(rows.length) + ' rows'); send.type = 'button'; send.disabled = true;
+    const cancel = el('button', 'jt-btn', 'Close'); cancel.type = 'button'; cancel.addEventListener('click', close);
+    if (!rows.length) {
+      dlg.appendChild(el('p', '', 'Nothing to share yet. Replies and 21+ days of silence show up here.'));
+    } else {
+      const wrap = el('div', 'jt-prev'), t = el('table'), hd = el('tr');
+      ['Company', 'Outcome', 'Days', 'Month'].forEach((h) => hd.appendChild(el('th', '', h))); t.appendChild(hd);
+      rows.forEach((r) => {
+        const tr = el('tr');
+        [r.company, r.outcome.replace('_', ' '), r.outcome === 'no_reply' ? r.waited + ' waiting' : r.days.toFixed(1), r.month].forEach((x) => tr.appendChild(el('td', '', x)));
+        t.appendChild(tr);
+      });
+      wrap.appendChild(t); dlg.appendChild(wrap);
+      const lab = el('label', 'jt-ck'), ck = el('input'); ck.type = 'checkbox';
+      lab.append(ck, SHARE_MODE === 'demo' ? 'This is a demo page with made-up data, so nothing will be sent.' : 'I understand and want to share these ' + fmtN(rows.length) + ' rows.');
+      dlg.appendChild(lab);
+      if (SHARE_MODE === 'demo') { ck.disabled = true; } else {
+        ck.addEventListener('change', () => { send.disabled = !ck.checked; });
+      }
+      send.addEventListener('click', async () => {
+        send.disabled = true; ck.disabled = true; msg.textContent = 'Sending...';
+        try {
+          let n = 0;
+          for (let i = 0; i < rows.length; i += 40) {
+            const res = await fetch(SHARE_URL.replace(/\/$/, '') + '/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ version: 1, rows: rows.slice(i, i + 40) }) });
+            if (!res.ok) { let why = ''; try { why = (await res.json()).error; } catch (e) { why = ''; } throw new Error(why || 'HTTP ' + res.status); }
+            n += Math.min(40, rows.length - i);
+            msg.textContent = 'Sent ' + fmtN(n) + ' of ' + fmtN(rows.length) + '...';
+          }
+          msg.textContent = 'Thank you! Sent ' + fmtN(n) + ' rows.'; cancel.textContent = 'Done';
+        } catch (err) {
+          msg.textContent = 'Could not send (' + err.message + '). Nothing was changed. Try again later.'; send.disabled = false; ck.disabled = false;
+        }
+      });
+    }
+    const act = el('div', 'jt-act'); act.append(msg, cancel); if (rows.length) act.appendChild(send);
+    dlg.appendChild(act); back.appendChild(dlg); root.appendChild(back);
+    cancel.focus();
+  }
+  const shareBtn = root.querySelector('.jt-share');
+  if (shareBtn) {
+    if (SHARE_MODE === 'live' && /YOUR-NAME/.test(SHARE_URL)) shareBtn.hidden = true;
+    shareBtn.addEventListener('click', openShare);
+  }
+
+  dash.onData(() => { fillMarks(); drawTiers(); drawDays(); drawBoard(); });
+})();
+</script>
+
+</div></body></html>
