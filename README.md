@@ -1,6 +1,6 @@
 # Job Application Ghosting Tracker
 
-**Certified Ghost detector for your job search.** A Claude skill that reads your email, scores every company on how fast it replied, and builds a dark-mode dashboard of the evidence.
+**Certified Ghost detector for your job search.** A Claude skill that reads your email, scores every company on how fast it replied, and opens a dashboard (dark or light, your pick) of the evidence.
 
 ![Sample dashboard](assets/dashboard-preview.png)
 
@@ -15,8 +15,6 @@
 It only reads your email. It never sends, deletes, or changes anything.
 
 ## Use it with Claude (about 3 minutes)
-
-You need a Pro, Max, Team or Enterprise plan, with code execution and file creation switched on in Settings > Capabilities. No Cowork required. On the free plan, use the paste route in the next section.
 
 1. Download [`job-application-tracker.zip`](job-application-tracker.zip) from this repo. Do not unzip it.
 2. In Claude (web or desktop), open [**Customize > Skills**](https://claude.ai/customize/skills) and upload the zip. Turn the skill on.

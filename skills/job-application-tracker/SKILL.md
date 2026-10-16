@@ -1,11 +1,11 @@
 ---
 name: job-application-tracker
-description: Scans the user's email inbox (Gmail tested, Outlook and others via fallbacks) to track job applications and report stats (applied, rejected, interviewed, ghosted, average days to reply, which companies), scores how fast each company replied, and can build a dark-mode dashboard. Use whenever the user asks about their job search numbers, such as "how many companies ghosted me", "how many rejections this year", "my reply rate", "which jobs haven't replied", "how long do companies take to respond", or mentions a job tracker, even if they do not name this skill.
+description: Scans the user's email inbox (Gmail tested, Outlook and others via fallbacks) to track job applications and report stats (applied, rejected, interviewed, ghosted, average days to reply, which companies), scores how fast each company replied, and shows a dark or light dashboard automatically. Use whenever the user asks about their job search numbers, such as "how many companies ghosted me", "how many rejections this year", "my reply rate", "which jobs haven't replied", "how long do companies take to respond", or mentions a job tracker, even if they do not name this skill.
 ---
 
 # Job Application Tracker
 
-Turn the user's email inbox into a job search scoreboard, with a speed score for every company and an optional dark-mode dashboard. Read-only: never send, label, delete, or draft anything.
+Turn the user's email inbox into a job search scoreboard, with a speed score for every company and a dashboard that opens automatically (dark or light, your pick on first run). Read-only: never send, label, delete, or draft anything.
 
 Created by Kao Smith, kaosmith.com. MIT license.
 
@@ -25,6 +25,7 @@ Look at the tools available in this session. Do not ask the user if the answer i
 Save the choice as `source` in the `job-tracker.csv` header so the next run does not ask again.
 
 ## Settings (ask once, remember)
+- **Theme**: `dark` or `light`. On the user's FIRST run (no `theme` in the `job-tracker.csv` header, or no file at all), ask before building the dashboard: "Dark or light mode for your dashboard?" Use a quick multiple-choice question if the interface has one, with dark as the first option. Save the answer as `theme` in the header and never ask again. The dashboard also has an in-page Dark/Light switch, so the choice is easy to undo.
 - **Label style**: `spicy` (default, funny names) or `clean` (plain names). If the user says they want it work-safe, or will screen-share it, use `clean`.
 - **Ghost cutoff**: days of silence before a company counts as ghosting. Default 21.
 
@@ -59,7 +60,7 @@ Group by company plus role.
 - Some confirmations (for example job board apply emails) do not name the company. List them as "Unknown" instead of guessing.
 
 Columns: `company, role, applied_at, first_reply_at, outcome, days_to_reply`
-Outcome is one of `rejected`, `interview`, `no_reply`. Stored in the file header: `last_scan` and `source`.
+Outcome is one of `rejected`, `interview`, `no_reply`. Stored in the file header: `last_scan`, `source` and `theme`.
 
 ## Step 5: Compute the stats in code
 Do the arithmetic in a script, never by eye.
@@ -96,16 +97,18 @@ Speed score (0 to 100): 100 for a reply within a day, minus 5 points per extra d
 
 Always show the plain-English tooltip text on hover or next to the label, so the joke never hides the meaning.
 
-## Step 8: Dashboard (offer it)
-If the user can view an HTML page or artifact:
-1. Open `dashboard-template.html` from this skill folder. It is a complete, self-contained dark-mode dashboard.
-2. Replace the JSON inside `<script id="job-data" type="application/json">` with the user's rows. Each row: `id, company, role, applied_at, replied_at, status, as_of, engaged`. `status` is `Rejected`, `Interview` or `No reply`. Dates are ISO strings, or `null`. `as_of` is the scan time. `engaged` is true only when a company with an unanswered application has also interviewed the user.
-3. Remove the "sample data, all companies are made up" line in the header, and the sample banner.
-4. Keep the footer credit "Made with the Job Application Tracker skill, kaosmith.com". Do not remove it.
-5. Leave the "Share anonymously" button, `SHARE_URL` and `SHARE_MODE` exactly as the template has them. Do not change the wording of its privacy dialog. Mention once that the button exists, that it is optional, and that it sends only company, outcome, days to reply and month applied, after the user previews every row.
-6. Tell the user it is a snapshot: the email sorting is a judgment call, so it is not live. Offer to refresh it with new mail only.
+## Step 8: Dashboard (always show it)
+Build and display the dashboard at the end of every run, without being asked, right after the short Step 6 answer. Do not offer it, just show it. If the user's question was narrow (for example "how many ghosted me"), answer it first in a line, then show the dashboard. Display it the best way the session allows: publish it as an artifact if an Artifact tool exists, otherwise save the HTML file and send or open it. If nothing can display HTML, say so and give the Step 6 report only.
 
-The page already has quick filters (status, verdict, search, company or application view), sortable columns, hover tooltips, and a Spicy/Clean label toggle.
+1. Open `dashboard-template.html` from this skill folder. It is a complete, self-contained dashboard with a dark and a light theme.
+2. Replace the JSON inside `<script id="job-data" type="application/json">` with the user's rows. Each row: `id, company, role, applied_at, replied_at, status, as_of, engaged`. `status` is `Rejected`, `Interview` or `No reply`. Dates are ISO strings, or `null`. `as_of` is the scan time. `engaged` is true only when a company with an unanswered application has also interviewed the user.
+3. Set the theme: in the line `const DEFAULT_THEME = 'dark';` change `'dark'` to the user's saved `theme`.
+4. Remove the "sample data, all companies are made up" line in the header, and the sample banner.
+5. Keep the footer credit "Made with the Job Application Tracker skill, kaosmith.com". Do not remove it.
+6. Leave the "Share anonymously" button, `SHARE_URL` and `SHARE_MODE` exactly as the template has them. Do not change the wording of its privacy dialog. The button is always visible. If the collector is not connected yet, its dialog says so and cannot send. Mention once that the button exists, that it is optional, and that it sends only company, outcome, days to reply and month applied, after the user previews every row.
+7. Tell the user it is a snapshot: the email sorting is a judgment call, so it is not live. Offer to refresh it with new mail only.
+
+The page already has quick filters (status, verdict, search, company or application view), sortable columns, hover tooltips, and a Dark/Light theme switch, and a Spicy/Clean label toggle.
 
 ## Step 9: Save and offer a weekly run
 Update `job-tracker.csv` and `last_scan`. Offer once to schedule a weekly refresh (a scheduled task that only reads new mail since `last_scan`). Do not offer again if they decline.

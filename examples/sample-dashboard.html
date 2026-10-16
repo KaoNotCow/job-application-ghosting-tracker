@@ -3,88 +3,90 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 #dash-root{--dash-gutter:0}
-.jt{position:relative;box-sizing:border-box;min-height:100vh;background:#14161c;color:#e4e7ee;font-family:var(--font-anthropic-sans);padding:clamp(14px,3vw,30px);line-height:1.45}
+.jt{--jt-bg:#14161c;--jt-card:#1b1e26;--jt-card2:#1f232d;--jt-hover:#20242e;--jt-chip:#222632;--jt-track:#242834;--jt-track2:#2a2f3b;--jt-tipbg:#262b38;--jt-line:#2c313e;--jt-line2:#3a4153;--jt-line3:#4b5575;--jt-sel:#2e3550;--jt-pri:#3a4a8a;--jt-accent:#5b6cb0;--jt-tx:#e4e7ee;--jt-tx1:#eef0f5;--jt-tx1b:#f0f2f7;--jt-tx2:#cfd4e0;--jt-tx2b:#c3c9d8;--jt-tx3:#b4bacb;--jt-tx3b:#b9c0d0;--jt-tx4:#a4abbd;--jt-mut:#9aa2b4;--jt-mut2:#8c94a7;--jt-mut3:#7f879a;--jt-mut4:#6f7788;--jt-link:#9db3ff;--jt-good:#7ddc8f;--jt-bad:#ff7f98;--jt-warn:#f2c15b;--jt-no:#ff9db0;--jt-selx:#fff;--jt-scrim:rgba(8,9,13,.72);}
+.jt.light{--jt-bg:#f4f5f9;--jt-card:#ffffff;--jt-card2:#eceff5;--jt-hover:#f0f2f8;--jt-chip:#eceef4;--jt-track:#e3e6ee;--jt-track2:#dde1ea;--jt-tipbg:#ffffff;--jt-line:#d9dde6;--jt-line2:#c5cbd8;--jt-line3:#a9b1c6;--jt-sel:#dfe5fb;--jt-pri:#3a4a8a;--jt-accent:#4a5bb0;--jt-tx:#1d2230;--jt-tx1:#12151f;--jt-tx1b:#12151f;--jt-tx2:#2c3345;--jt-tx2b:#2f3649;--jt-tx3:#454d63;--jt-tx3b:#454d63;--jt-tx4:#4f576b;--jt-mut:#5a6379;--jt-mut2:#626b80;--jt-mut3:#69728a;--jt-mut4:#767f94;--jt-link:#3b52c4;--jt-good:#1c8a39;--jt-bad:#d62f56;--jt-warn:#a56a00;--jt-no:#c0294c;--jt-selx:#1d2a66;--jt-scrim:rgba(30,34,48,.45);}
+.jt{position:relative;box-sizing:border-box;min-height:100vh;background:var(--jt-bg);color:var(--jt-tx);font-family:var(--font-anthropic-sans);padding:clamp(14px,3vw,30px);line-height:1.45}
 .jt *{box-sizing:border-box}
 .jt-wrap{max-width:1200px;margin:0 auto}
-.jt-kicker{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#7f879a}
-.jt h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:2rem;margin:.15rem 0 .5rem;letter-spacing:-.01em;color:#eef0f5}
-.jt-take{color:#b4bacb;font-size:1.02rem;max-width:64rem;margin:0}
-.jt .jt-take .m{color:#f0f2f7;font-weight:600;font-variant-numeric:tabular-nums}
-.jt-sub{color:#7f879a;font-size:.8rem;margin:.55rem 0 0}
+.jt-kicker{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--jt-mut3)}
+.jt h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:2rem;margin:.15rem 0 .5rem;letter-spacing:-.01em;color:var(--jt-tx1)}
+.jt-take{color:var(--jt-tx3);font-size:1.02rem;max-width:64rem;margin:0}
+.jt .jt-take .m{color:var(--jt-tx1b);font-weight:600;font-variant-numeric:tabular-nums}
+.jt-sub{color:var(--jt-mut3);font-size:.8rem;margin:.55rem 0 0}
 .jt-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:12px;margin:22px 0 14px}
-.jt-tile{background:#1b1e26;border:1px solid #2c313e;border-radius:14px;padding:14px 16px;min-height:5.6rem;cursor:help}
-.jt-tile .l{font-size:.78rem;color:#9aa2b4}
-.jt-tile .v{font-family:var(--font-anthropic-serif);font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.15;margin-top:2px;color:#eef0f5}
-.jt-tile.bad .v{color:#ff7f98}.jt-tile.good .v{color:#7ddc8f}.jt-tile.wait .v{color:#9db3ff}.jt-tile.warn .v{color:#f2c15b}
+.jt-tile{background:var(--jt-card);border:1px solid var(--jt-line);border-radius:14px;padding:14px 16px;min-height:5.6rem;cursor:help}
+.jt-tile .l{font-size:.78rem;color:var(--jt-mut)}
+.jt-tile .v{font-family:var(--font-anthropic-serif);font-size:2.2rem;font-weight:400;font-variant-numeric:tabular-nums;line-height:1.15;margin-top:2px;color:var(--jt-tx1)}
+.jt-tile.bad .v{color:var(--jt-bad)}.jt-tile.good .v{color:var(--jt-good)}.jt-tile.wait .v{color:var(--jt-link)}.jt-tile.warn .v{color:var(--jt-warn)}
 .jt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,26rem),1fr));gap:14px;margin-bottom:14px}
-.jt-card{background:#1b1e26;border:1px solid #2c313e;border-radius:14px;padding:18px 18px 16px;container-type:inline-size;min-width:0}
-.jt-card h2{font-size:1.02rem;font-weight:500;margin:0 0 2px;color:#eef0f5}
-.jt-note{font-size:.8rem;color:#8c94a7;margin:0 0 14px}
+.jt-card{background:var(--jt-card);border:1px solid var(--jt-line);border-radius:14px;padding:18px 18px 16px;container-type:inline-size;min-width:0}
+.jt-card h2{font-size:1.02rem;font-weight:500;margin:0 0 2px;color:var(--jt-tx1)}
+.jt-note{font-size:.8rem;color:var(--jt-mut2);margin:0 0 14px}
 .jt-tiers{min-height:13rem}
 .jt-trow{display:grid;grid-template-columns:minmax(8.5rem,12rem) 1fr 2.4rem;gap:10px;align-items:center;padding:6px 0;cursor:pointer}
-.jt-trow:hover .jt-track{background:#2a2f3b}
+.jt-trow:hover .jt-track{background:var(--jt-track2)}
 .jt-tl{font-size:.88rem;display:flex;align-items:center;white-space:nowrap}
 .jt .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;flex:none}
-.jt-track{height:12px;border-radius:7px;background:#242834;overflow:hidden}
+.jt-track{height:12px;border-radius:7px;background:var(--jt-track);overflow:hidden}
 .jt-fill{height:100%;border-radius:7px}
-.jt-n{font-variant-numeric:tabular-nums;text-align:right;font-size:.9rem;color:#cfd4e0}
+.jt-n{font-variant-numeric:tabular-nums;text-align:right;font-size:.9rem;color:var(--jt-tx2)}
 .jt-days{min-height:28rem}
 .jt svg text{font-family:var(--font-anthropic-sans)}
 .jt-ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-bottom:10px}
-.jt-seg{display:inline-flex;background:#14161c;border:1px solid #2c313e;border-radius:999px;padding:3px}
-.jt-seg button{font:inherit;font-size:.82rem;color:#9aa2b4;background:none;border:0;border-radius:999px;padding:5px 14px;cursor:pointer}
-.jt-seg button[aria-pressed=true]{background:#2e3550;color:#fff}
-.jt-q{font:inherit;font-size:.85rem;color:#e4e7ee;background:#14161c;border:1px solid #2c313e;border-radius:999px;padding:6px 14px;min-width:12rem;outline:none}
-.jt-q:focus{border-color:#5b6cb0}
-.jt-q::placeholder{color:#6f7788}
+.jt-seg{display:inline-flex;background:var(--jt-bg);border:1px solid var(--jt-line);border-radius:999px;padding:3px}
+.jt-seg button{font:inherit;font-size:.82rem;color:var(--jt-mut);background:none;border:0;border-radius:999px;padding:5px 14px;cursor:pointer}
+.jt-seg button[aria-pressed=true]{background:var(--jt-sel);color:var(--jt-selx)}
+.jt-q{font:inherit;font-size:.85rem;color:var(--jt-tx);background:var(--jt-bg);border:1px solid var(--jt-line);border-radius:999px;padding:6px 14px;min-width:12rem;outline:none}
+.jt-q:focus{border-color:var(--jt-accent)}
+.jt-q::placeholder{color:var(--jt-mut4)}
 .jt-chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px;align-items:center}
-.jt-lab{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#6f7788;margin-right:4px}
-.jt-chip{font:inherit;font-size:.8rem;color:#c3c9d8;background:#222632;border:1px solid #2c313e;border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center}
-.jt-chip:hover{border-color:#4b5575}
-.jt-chip[aria-pressed=true]{background:#2e3550;border-color:#5b6cb0;color:#fff}
+.jt-lab{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--jt-mut4);margin-right:4px}
+.jt-chip{font:inherit;font-size:.8rem;color:var(--jt-tx2b);background:var(--jt-chip);border:1px solid var(--jt-line);border-radius:999px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center}
+.jt-chip:hover{border-color:var(--jt-line3)}
+.jt-chip[aria-pressed=true]{background:var(--jt-sel);border-color:var(--jt-accent);color:var(--jt-selx)}
 .jt-chip .n{opacity:.6;margin-left:7px;font-variant-numeric:tabular-nums}
-.jt-scroll{max-height:36rem;overflow:auto;border:1px solid #242834;border-radius:10px}
+.jt-scroll{max-height:36rem;overflow:auto;border:1px solid var(--jt-track);border-radius:10px}
 .jt-t{width:100%;border-collapse:collapse;font-size:.88rem}
 .jt-t[hidden]{display:none}
-.jt-t th{position:sticky;top:0;z-index:2;background:#1f232d;text-align:left;padding:9px 12px;border-bottom:1px solid #2c313e;color:#9aa2b4;font-weight:500;font-size:.78rem;white-space:nowrap}
+.jt-t th{position:sticky;top:0;z-index:2;background:var(--jt-card2);text-align:left;padding:9px 12px;border-bottom:1px solid var(--jt-line);color:var(--jt-mut);font-weight:500;font-size:.78rem;white-space:nowrap}
 .jt-t th button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-.jt-t th button:hover{color:#e4e7ee}
+.jt-t th button:hover{color:var(--jt-tx)}
 .jt-t th[aria-sort=ascending] button:after{content:" \2191"}
 .jt-t th[aria-sort=descending] button:after{content:" \2193"}
-.jt-t td{padding:9px 12px;border-bottom:1px solid #222632;vertical-align:middle}
-.jt-t tr:hover td{background:#20242e}
+.jt-t td{padding:9px 12px;border-bottom:1px solid var(--jt-chip);vertical-align:middle}
+.jt-t tr:hover td{background:var(--jt-hover)}
 .jt-t .num{font-variant-numeric:tabular-nums;text-align:right}
 .jt-t th.num{text-align:right}
 .jt-badge{display:inline-flex;align-items:center;padding:3px 11px;border-radius:999px;font-size:.78rem;font-weight:500;white-space:nowrap;cursor:help;border:1px solid color-mix(in srgb,currentColor 38%,transparent);background:color-mix(in srgb,currentColor 13%,transparent)}
-.jt-sbar{display:inline-block;width:54px;height:6px;border-radius:4px;background:#2a2f3b;vertical-align:middle;margin-left:9px;overflow:hidden}
+.jt-sbar{display:inline-block;width:54px;height:6px;border-radius:4px;background:var(--jt-track2);vertical-align:middle;margin-left:9px;overflow:hidden}
 .jt-sbar span{display:block;height:100%;border-radius:4px}
-.jt-count{font-size:.78rem;color:#7f879a;margin:9px 2px 0}
-.jt-empty{padding:26px;text-align:center;color:#7f879a;font-size:.9rem}
-.jt-legend{margin-top:14px;font-size:.84rem;color:#a4abbd}
-.jt-legend summary{cursor:pointer;color:#9db3ff}
+.jt-count{font-size:.78rem;color:var(--jt-mut3);margin:9px 2px 0}
+.jt-empty{padding:26px;text-align:center;color:var(--jt-mut3);font-size:.9rem}
+.jt-legend{margin-top:14px;font-size:.84rem;color:var(--jt-tx4)}
+.jt-legend summary{cursor:pointer;color:var(--jt-link)}
 .jt-rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:8px 18px;margin-top:10px}
 .jt-rules div{display:flex;gap:8px;align-items:baseline}
-.jt-foot{color:#6f7788;font-size:.76rem;margin:16px 2px 0}
-.jt-tip{position:absolute;display:none;z-index:30;max-width:19rem;background:#262b38;border:1px solid #3a4153;border-radius:10px;padding:8px 11px;font-size:.8rem;box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;white-space:pre-line}
-.jt-tip b{display:block;font-weight:600;margin-bottom:2px;color:#f0f2f7}
-.jt-tip span{color:#b9c0d0}
-.jt-share{margin-left:auto}
+.jt-foot{color:var(--jt-mut4);font-size:.76rem;margin:16px 2px 0}
+.jt-tip{position:absolute;display:none;z-index:30;max-width:19rem;background:var(--jt-tipbg);border:1px solid var(--jt-line2);border-radius:10px;padding:8px 11px;font-size:.8rem;box-shadow:0 8px 24px rgba(0,0,0,.45);pointer-events:none;white-space:pre-line}
+.jt-tip b{display:block;font-weight:600;margin-bottom:2px;color:var(--jt-tx1b)}
+.jt-tip span{color:var(--jt-tx3b)}
+.jt-share{margin-left:auto;border-color:var(--jt-accent)}
 .jt-share[hidden]{display:none}
-.jt-modal{position:fixed;inset:0;z-index:50;background:rgba(8,9,13,.72);display:flex;align-items:center;justify-content:center;padding:16px}
-.jt-dlg{background:#1b1e26;border:1px solid #3a4153;border-radius:16px;max-width:36rem;width:100%;max-height:90vh;overflow:auto;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
-.jt-dlg h3{font-family:var(--font-anthropic-serif);font-weight:400;font-size:1.4rem;margin:0 0 6px;color:#eef0f5}
-.jt-dlg p{margin:6px 0;color:#b4bacb;font-size:.9rem}
-.jt-dlg .yes{color:#7ddc8f}.jt-dlg .no{color:#ff9db0}
-.jt-prev{max-height:11rem;overflow:auto;border:1px solid #2c313e;border-radius:10px;margin:12px 0}
+.jt-modal{position:fixed;inset:0;z-index:50;background:var(--jt-scrim);display:flex;align-items:center;justify-content:center;padding:16px}
+.jt-dlg{background:var(--jt-card);border:1px solid var(--jt-line2);border-radius:16px;max-width:36rem;width:100%;max-height:90vh;overflow:auto;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.jt-dlg h3{font-family:var(--font-anthropic-serif);font-weight:400;font-size:1.4rem;margin:0 0 6px;color:var(--jt-tx1)}
+.jt-dlg p{margin:6px 0;color:var(--jt-tx3);font-size:.9rem}
+.jt-dlg .yes{color:var(--jt-good)}.jt-dlg .no{color:var(--jt-no)}
+.jt-prev{max-height:11rem;overflow:auto;border:1px solid var(--jt-line);border-radius:10px;margin:12px 0}
 .jt-prev table{width:100%;border-collapse:collapse;font-size:.8rem}
-.jt-prev th{position:sticky;top:0;background:#1f232d;text-align:left;padding:6px 10px;color:#9aa2b4;font-weight:500}
-.jt-prev td{padding:5px 10px;border-top:1px solid #222632;color:#cfd4e0}
+.jt-prev th{position:sticky;top:0;background:var(--jt-card2);text-align:left;padding:6px 10px;color:var(--jt-mut);font-weight:500}
+.jt-prev td{padding:5px 10px;border-top:1px solid var(--jt-chip);color:var(--jt-tx2)}
 .jt-act{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap;align-items:center}
-.jt-btn{font:inherit;font-size:.88rem;border-radius:999px;padding:7px 18px;cursor:pointer;border:1px solid #3a4153;background:#222632;color:#e4e7ee}
-.jt-btn.pri{background:#3a4a8a;border-color:#5b6cb0;color:#fff}
+.jt-btn{font:inherit;font-size:.88rem;border-radius:999px;padding:7px 18px;cursor:pointer;border:1px solid var(--jt-line2);background:var(--jt-chip);color:var(--jt-tx)}
+.jt-btn.pri{background:var(--jt-pri);border-color:var(--jt-accent);color:#fff}
 .jt-btn[disabled]{opacity:.45;cursor:not-allowed}
-.jt-ck{display:flex;gap:9px;align-items:flex-start;font-size:.88rem;color:#cfd4e0;margin-top:10px}
-.jt-msg{font-size:.85rem;color:#9db3ff;margin-right:auto}
+.jt-ck{display:flex;gap:9px;align-items:flex-start;font-size:.88rem;color:var(--jt-tx2);margin-top:10px}
+.jt-msg{font-size:.85rem;color:var(--jt-link);margin-right:auto}
 
 @container (max-width:560px){.jt-hide-sm{display:none}}
 </style>
@@ -93,18 +95,18 @@
   <header>
     <div class="jt-kicker">Job search scoreboard &middot; sample data, all companies are made up</div>
     <h1 id="title">Job Application Tracker</h1>
-    <p class="jt-take" id="takeaway">Out of <span class="m" data-source="summary" data-row="0" data-field="total">-</span> applications, <span class="m" data-source="summary" data-row="0" data-field="rejected">-</span> said no, <span class="m" data-source="summary" data-row="0" data-field="interviews">-</span> led to an interview, and <span class="m" data-source="summary" data-row="0" data-field="ghosted">-</span> ghosted you. When a company does reply, it takes <span class="m" data-source="summary" data-row="0" data-field="avg_days">-</span> days on average (median <span class="m" data-source="summary" data-row="0" data-field="median_days">-</span>).</p>
-    <div class="jt-ctl" style="margin:12px 0 0"><span class="jt-lab">Labels</span><div class="jt-seg jt-labels" role="group" aria-label="Label style"><button type="button" data-l="spicy" aria-pressed="true">Spicy</button><button type="button" data-l="clean" aria-pressed="false">Clean</button></div><button class="jt-chip jt-share" type="button" data-tip="Share anonymously|Optional. Sends only company, outcome, days to reply and month applied to a public stats project. Nothing else. You see exactly what goes out first.">Share anonymously</button></div>
-    <p class="jt-sub">Applications since <span data-source="summary" data-row="0" data-field="first_applied">-</span>, as of <span data-source="summary" data-row="0" data-field="as_of">-</span>. Hover anything with a dotted feel for the plain-English version.</p>
+    <p class="jt-take" id="takeaway">Out of <span class="m" data-source="summary" data-row="0" data-field="total">—</span> applications, <span class="m" data-source="summary" data-row="0" data-field="rejected">—</span> said no, <span class="m" data-source="summary" data-row="0" data-field="interviews">—</span> led to an interview, and <span class="m" data-source="summary" data-row="0" data-field="ghosted">—</span> ghosted you. When a company does reply, it takes <span class="m" data-source="summary" data-row="0" data-field="avg_days">—</span> days on average (median <span class="m" data-source="summary" data-row="0" data-field="median_days">—</span>).</p>
+    <div class="jt-ctl" style="margin:12px 0 0"><span class="jt-lab">Theme</span><div class="jt-seg jt-theme" role="group" aria-label="Color theme"><button type="button" data-t="dark" aria-pressed="true">Dark</button><button type="button" data-t="light" aria-pressed="false">Light</button></div><span class="jt-lab" style="margin-left:8px">Labels</span><div class="jt-seg jt-labels" role="group" aria-label="Label style"><button type="button" data-l="spicy" aria-pressed="true">Spicy</button><button type="button" data-l="clean" aria-pressed="false">Clean</button></div><button class="jt-chip jt-share" type="button" data-tip="Share anonymously|Optional. Sends only company, outcome, days to reply and month applied to a public stats project. Nothing else. You see exactly what goes out first.">Share anonymously</button></div>
+    <p class="jt-sub">Applications since <span data-source="summary" data-row="0" data-field="first_applied">—</span>, as of <span data-source="summary" data-row="0" data-field="as_of">—</span>. Hover anything with a dotted feel for the plain-English version.</p>
   </header>
 
   <section class="jt-tiles" id="tiles">
-    <div class="jt-tile" data-tip="Applications|Every job application found in your Gmail, one per role."><div class="l">Applications</div><div class="v"><span data-source="summary" data-row="0" data-field="total">-</span></div></div>
-    <div class="jt-tile warn" data-tip="Rejected|The company sent a no."><div class="l">Rejected</div><div class="v"><span data-source="summary" data-row="0" data-field="rejected">-</span></div></div>
-    <div class="jt-tile good" data-tip="Interviews|A real person wanted to talk to you. Green flag."><div class="l">Interviews</div><div class="v"><span data-source="summary" data-row="0" data-field="interviews">-</span></div></div>
-    <div class="jt-tile bad" data-tip="Ghosted|Did not respond. Nothing for 3 or more weeks after you applied."><div class="l">Ghosted</div><div class="v"><span data-source="summary" data-row="0" data-field="ghosted">-</span></div></div>
-    <div class="jt-tile wait" data-tip="Still waiting|No reply yet, but it has been under 3 weeks, so they get the benefit of the doubt."><div class="l">Still waiting</div><div class="v"><span data-source="summary" data-row="0" data-field="waiting">-</span></div></div>
-    <div class="jt-tile" data-tip="Average days to reply|Average time from applying to the first answer, only counting companies that replied."><div class="l">Avg days to reply</div><div class="v"><span data-source="summary" data-row="0" data-field="avg_days">-</span></div></div>
+    <div class="jt-tile" data-tip="Applications|Every job application found in your Gmail, one per role."><div class="l">Applications</div><div class="v"><span data-source="summary" data-row="0" data-field="total">—</span></div></div>
+    <div class="jt-tile warn" data-tip="Rejected|The company sent a no."><div class="l">Rejected</div><div class="v"><span data-source="summary" data-row="0" data-field="rejected">—</span></div></div>
+    <div class="jt-tile good" data-tip="Interviews|A real person wanted to talk to you. Green flag."><div class="l">Interviews</div><div class="v"><span data-source="summary" data-row="0" data-field="interviews">—</span></div></div>
+    <div class="jt-tile bad" data-tip="Ghosted|Did not respond. Nothing for 3 or more weeks after you applied."><div class="l">Ghosted</div><div class="v"><span data-source="summary" data-row="0" data-field="ghosted">—</span></div></div>
+    <div class="jt-tile wait" data-tip="Still waiting|No reply yet, but it has been under 3 weeks, so they get the benefit of the doubt."><div class="l">Still waiting</div><div class="v"><span data-source="summary" data-row="0" data-field="waiting">—</span></div></div>
+    <div class="jt-tile" data-tip="Average days to reply|Average time from applying to the first answer, only counting companies that replied."><div class="l">Avg days to reply</div><div class="v"><span data-source="summary" data-row="0" data-field="avg_days">—</span></div></div>
   </section>
 
   <section class="jt-grid">
@@ -167,7 +169,7 @@
     </details>
   </section>
   <p class="jt-foot">Source: confirmation and decision emails in Gmail, sorted by Claude. This is a snapshot, not a live query: ask Claude to refresh it and it rescans only new mail.</p>
-<p class="jt-foot" style="text-align:right">Made with the Job Application Tracker skill &middot; <a href="https://kaosmith.com" style="color:#9db3ff;text-decoration:none">kaosmith.com</a></p>
+<p class="jt-foot" style="text-align:right">Made with the Job Application Tracker skill &middot; <a href="https://kaosmith.com" style="color:var(--jt-link);text-decoration:none">kaosmith.com</a></p>
 </div>
 </div>
 <script id="job-data" type="application/json">[
@@ -748,6 +750,18 @@ dash.calc('companies', {
     'Too Early to Tell': 'Applied less than a week ago. Too soon to judge.',
     'Mystery Timing': 'They said no, but the original confirmation email was not found, so the reply time is unknown.'
   };
+  // Theme. The skill sets DEFAULT_THEME to 'dark' or 'light' from the user's first-run choice.
+  const DEFAULT_THEME = 'dark';
+  const PAL = {
+    dark: { bg: '#14161c', grid: '#2a2f3b', axis: '#7f879a', lab: '#cfd4e0', val: '#9aa2b4', wk: '#8da6ff', wk2: '#f28b5c', sc: ['#5ee0b3', '#f2c15b', '#ff5f7e'],
+      col: { 'Speed Demon': '#5ee0b3', 'Respectful': '#9ad77f', 'Slow Burn': '#f2c15b', 'Emotionally Unavailable': '#f28b5c', 'Certified Ghost': '#ff5f7e', 'Left on Read': '#8da6ff', 'Too Early to Tell': '#8b93a7', 'Mystery Timing': '#b79cff' },
+      st: { 'Rejected': '#e8899b', 'Interview': '#7ddc8f', 'No reply': '#9aa2b4' } },
+    light: { bg: '#f4f5f9', grid: '#dde1ea', axis: '#69728a', lab: '#2c3345', val: '#5a6379', wk: '#4a63d8', wk2: '#d4581f', sc: ['#0f9d73', '#b27a00', '#d62f56'],
+      col: { 'Speed Demon': '#0f9d73', 'Respectful': '#5a9a1f', 'Slow Burn': '#b27a00', 'Emotionally Unavailable': '#d4581f', 'Certified Ghost': '#d62f56', 'Left on Read': '#4a63d8', 'Too Early to Tell': '#6b7388', 'Mystery Timing': '#7c56d6' },
+      st: { 'Rejected': '#c4405a', 'Interview': '#1c8a39', 'No reply': '#5a6379' } }
+  };
+  const P = () => PAL[state.theme];
+  const initialTheme = () => { try { const v = (localStorage.getItem('jat-theme') || '').split('|'); if ((v[0] === 'dark' || v[0] === 'light') && v[1] === DEFAULT_THEME) return v[0]; } catch (e) { /* storage blocked */ } return DEFAULT_THEME; };
   const CLEAN = { 'Speed Demon': 'Fast', 'Respectful': 'On time', 'Slow Burn': 'Slow', 'Emotionally Unavailable': 'Very slow', 'Certified Ghost': 'No response', 'Left on Read': 'Still waiting', 'Too Early to Tell': 'Too early', 'Mystery Timing': 'Unknown timing' };
   const disp = (t) => (state.labels === 'clean' ? CLEAN[t] : t);
   const RULE = { 'Speed Demon': '2 days or less', 'Respectful': '3 to 7 days', 'Slow Burn': '8 to 14 days', 'Emotionally Unavailable': 'over 14 days', 'Certified Ghost': 'no reply after 21 days', 'Left on Read': 'no reply, 7 to 21 days', 'Too Early to Tell': 'applied under 7 days ago', 'Mystery Timing': 'rejected, apply date unknown' };
@@ -755,11 +769,22 @@ dash.calc('companies', {
   const STATUS_COL = { 'Rejected': '#e8899b', 'Interview': '#7ddc8f', 'No reply': '#9aa2b4' };
   const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
   const fmtN = d3.format(',');
-  const fmtD = (s) => s ? d3.utcFormat('%b %-d')(new Date(s)) : '-';
-  const fmtDY = (s) => s ? d3.utcFormat('%b %-d, %Y')(new Date(s)) : '-';
-  const scoreColor = (s) => s >= 70 ? '#5ee0b3' : s >= 35 ? '#f2c15b' : '#ff5f7e';
+  const fmtD = (s) => s ? d3.utcFormat('%b %-d')(new Date(s)) : '—';
+  const fmtDY = (s) => s ? d3.utcFormat('%b %-d, %Y')(new Date(s)) : '—';
+  const scoreColor = (s) => s >= 70 ? P().sc[0] : s >= 35 ? P().sc[1] : P().sc[2];
   const root = document.querySelector('.jt');
-  const state = { labels: 'spicy', view: 'co', status: 'All', tier: 'All', q: '', sort: { co: { k: 'score', dir: -1 }, app: { k: 'applied', dir: -1 } } };
+  const state = { theme: initialTheme(), labels: 'spicy', view: 'co', status: 'All', tier: 'All', q: '', sort: { co: { k: 'score', dir: -1 }, app: { k: 'applied', dir: -1 } } };
+
+  function applyTheme(t, redraw) {
+    state.theme = t; const p = PAL[t];
+    Object.assign(COL, p.col); Object.assign(STATUS_COL, p.st);
+    root.classList.toggle('light', t === 'light');
+    document.documentElement.style.background = p.bg; document.body.style.background = p.bg;
+    root.querySelectorAll('.jt-theme button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.t === t)));
+    try { localStorage.setItem('jat-theme', t + '|' + DEFAULT_THEME); } catch (e) { /* storage blocked */ }
+    if (redraw) { buildRules(); drawTiers(); drawDays(); drawBoard(); }
+  }
+  root.querySelectorAll('.jt-theme button').forEach((b) => b.addEventListener('click', () => applyTheme(b.dataset.t, true)));
 
   const tip = el('div', 'jt-tip');
   root.appendChild(tip);
@@ -790,7 +815,7 @@ dash.calc('companies', {
     const s = dash.data('summary');
     root.querySelectorAll('[data-source="summary"]').forEach((n) => {
       const f = n.dataset.field;
-      if (s.status !== 'ok' || !s.data.length) { n.textContent = '-'; return; }
+      if (s.status !== 'ok' || !s.data.length) { n.textContent = '—'; return; }
       const v = s.data[0][f];
       n.textContent = (f === 'as_of' || f === 'first_applied') ? fmtDY(v) : f.endsWith('_days') ? v.toFixed(1) : fmtN(v);
     });
@@ -833,10 +858,10 @@ dash.calc('companies', {
     const ml = Math.ceil(mw) + 14;
     const x = d3.scaleLinear([0, cap], [ml, W - mr]);
     [0, 7, 14, 21, 28, 35, 42].forEach((t) => {
-      svg.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top - 6).attr('y2', H - bot + 2).attr('stroke', '#2a2f3b').attr('stroke-width', 1);
-      svg.append('text').attr('x', x(t)).attr('y', H - 8).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#7f879a').text(t + 'd');
+      svg.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top - 6).attr('y2', H - bot + 2).attr('stroke', P().grid).attr('stroke-width', 1);
+      svg.append('text').attr('x', x(t)).attr('y', H - 8).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', P().axis).text(t + 'd');
     });
-    [[7, '#8da6ff', 'end', '1 week'], [14, '#f28b5c', 'start', '2 weeks: too slow']].forEach((l) => {
+    [[7, P().wk, 'end', '1 week'], [14, P().wk2, 'start', '2 weeks: too slow']].forEach((l) => {
       svg.append('line').attr('x1', x(l[0])).attr('x2', x(l[0])).attr('y1', top - 8).attr('y2', H - bot + 2).attr('stroke', l[1]).attr('stroke-width', 1.5).attr('stroke-dasharray', '4 4');
       svg.append('text').attr('x', x(l[0]) + (l[2] === 'end' ? -5 : 5)).attr('y', top - 12).attr('text-anchor', l[2]).attr('font-size', 11).attr('fill', l[1]).text(l[3]);
     });
@@ -844,10 +869,10 @@ dash.calc('companies', {
       const y = top + i * rh;
       const g = svg.append('g');
       g.append('rect').attr('x', 0).attr('y', y).attr('width', W).attr('height', rh).attr('fill', 'transparent').attr('data-tip', r.company + '|' + r.role + '\n' + r.days.toFixed(1) + ' days to reply. ' + MEAN[r.tier]);
-      g.append('text').attr('x', ml - 8).attr('y', y + rh / 2 + 4).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', '#cfd4e0').style('pointer-events', 'none').text(r.company);
+      g.append('text').attr('x', ml - 8).attr('y', y + rh / 2 + 4).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', P().lab).style('pointer-events', 'none').text(r.company);
       const w = Math.max(3, x(Math.min(r.days, cap)) - ml);
       g.append('rect').attr('x', ml).attr('y', y + 4).attr('width', w).attr('height', rh - 8).attr('rx', 4).attr('fill', COL[r.tier]).style('pointer-events', 'none');
-      g.append('text').attr('x', ml + w + 6).attr('y', y + rh / 2 + 4).attr('font-size', 11).attr('fill', '#9aa2b4').style('pointer-events', 'none').text(r.days.toFixed(1) + 'd' + (r.days > cap ? ' ▸' : ''));
+      g.append('text').attr('x', ml + w + 6).attr('y', y + rh / 2 + 4).attr('font-size', 11).attr('fill', P().val).style('pointer-events', 'none').text(r.days.toFixed(1) + 'd' + (r.days > cap ? ' ▸' : ''));
     });
   }
 
@@ -865,15 +890,15 @@ dash.calc('companies', {
     } else if (k === 'status') {
       const b = el('span', 'jt-badge', x); b.style.color = STATUS_COL[x]; b.dataset.tip = x + '|' + STATUS_TIP[x]; td.appendChild(b);
     } else if (k === 'score') {
-      if (x == null) { td.textContent = '-'; return; }
+      if (x == null) { td.textContent = '—'; return; }
       td.append(String(x));
       const bar = el('span', 'jt-sbar'), f = el('span'); f.style.width = x + '%'; f.style.background = scoreColor(x); bar.appendChild(f); td.appendChild(bar);
     } else if (k === 'days' || k === 'avg_days') {
-      td.textContent = x == null ? '-' : x.toFixed(1);
+      td.textContent = x == null ? '—' : x.toFixed(1);
     } else if (k === 'applied') {
       td.textContent = fmtD(x);
     } else {
-      td.textContent = x == null || x === '' ? '-' : x;
+      td.textContent = x == null || x === '' ? '—' : x;
     }
   }
 
@@ -944,9 +969,10 @@ dash.calc('companies', {
 
   // ---- Optional anonymous sharing -------------------------------------------
   // Set SHARE_URL to your own collector (see collector/SETUP.md). While it still
-  // contains YOUR-NAME the Share button stays hidden. SHARE_MODE 'demo' previews only.
+  // contains YOUR-NAME the button is visible but cannot send. SHARE_MODE 'demo' previews only.
   const SHARE_URL = 'https://job-tracker-stats.YOUR-NAME.workers.dev';
   const SHARE_MODE = 'demo';
+  const OFFLINE = SHARE_MODE === 'live' && /YOUR-NAME/.test(SHARE_URL);
 
   function sha256hex(str) {
     const K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
@@ -1030,9 +1056,9 @@ dash.calc('companies', {
       });
       wrap.appendChild(t); dlg.appendChild(wrap);
       const lab = el('label', 'jt-ck'), ck = el('input'); ck.type = 'checkbox';
-      lab.append(ck, SHARE_MODE === 'demo' ? 'This is a demo page with made-up data, so nothing will be sent.' : 'I understand and want to share these ' + fmtN(rows.length) + ' rows.');
+      lab.append(ck, SHARE_MODE === 'demo' ? 'This is a demo page with made-up data, so nothing will be sent.' : OFFLINE ? 'Sharing is not connected yet, so nothing can be sent from this copy.' : 'I understand and want to share these ' + fmtN(rows.length) + ' rows.');
       dlg.appendChild(lab);
-      if (SHARE_MODE === 'demo') { ck.disabled = true; } else {
+      if (SHARE_MODE === 'demo' || OFFLINE) { ck.disabled = true; } else {
         ck.addEventListener('change', () => { send.disabled = !ck.checked; });
       }
       send.addEventListener('click', async () => {
@@ -1057,10 +1083,10 @@ dash.calc('companies', {
   }
   const shareBtn = root.querySelector('.jt-share');
   if (shareBtn) {
-    if (SHARE_MODE === 'live' && /YOUR-NAME/.test(SHARE_URL)) shareBtn.hidden = true;
     shareBtn.addEventListener('click', openShare);
   }
 
+  applyTheme(state.theme, false);
   dash.onData(() => { fillMarks(); drawTiers(); drawDays(); drawBoard(); });
 })();
 </script>
