@@ -1,0 +1,15 @@
+name: Feature idea
+description: Something you wish the dashboard or skill did.
+labels: ["feature"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What do you want?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why does it matter?
+      description: What problem does it solve for your job search?

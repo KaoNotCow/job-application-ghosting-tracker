@@ -1,0 +1,43 @@
+name: Something broke
+description: The skill errored, the dashboard looks wrong, or a button does nothing.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not paste email contents, names or personal info. Company names and subject lines are fine.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you get instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: app
+    attributes:
+      label: Where are you running it?
+      options:
+        - Claude (web or desktop chat)
+        - Claude Code
+        - ChatGPT
+        - Gemini
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: inbox
+    attributes:
+      label: Which inbox?
+      options:
+        - Gmail
+        - Outlook or Microsoft 365
+        - Yahoo
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What did you ask it, and which scan range did you pick?

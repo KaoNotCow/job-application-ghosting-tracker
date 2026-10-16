@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question or share an idea
+    url: https://github.com/KaoNotCow/job-application-ghosting-tracker/discussions
+    about: Questions, ideas and "show your dashboard" posts live in Discussions.
+  - name: Privacy question
+    url: https://github.com/KaoNotCow/job-application-ghosting-tracker/blob/main/PRIVACY.md
+    about: Read what the skill reads and what the opt-in button sends.

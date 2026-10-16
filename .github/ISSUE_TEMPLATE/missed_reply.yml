@@ -1,0 +1,41 @@
+name: It missed a reply
+description: A company replied (rejection, interview, anything) and the dashboard still says "No reply".
+labels: ["missed-reply"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        These are the most useful reports. Share only the sender and subject, never the email body.
+  - type: input
+    id: company
+    attributes:
+      label: Company
+    validations:
+      required: true
+  - type: input
+    id: sender
+    attributes:
+      label: Sender address or platform
+      description: For example no-reply@ashbyhq.com, or greenhouse-mail.io.
+  - type: input
+    id: subject
+    attributes:
+      label: Subject line of the email it missed
+      description: Generic subjects like "Update" are exactly what we want to catch.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of reply was it?
+      options:
+        - Rejection
+        - Interview or screen
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: inbox
+    attributes:
+      label: Inbox provider
+      placeholder: Gmail, Outlook, Yahoo...
