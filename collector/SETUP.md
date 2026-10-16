@@ -31,15 +31,15 @@ curl https://job-tracker-stats.yourname.workers.dev/stats
 
 You should see `{"companies":[], ...}`. An empty list is correct, nothing has been shared yet.
 
-## 3. Turn on the button
+## 3. Point the button at it
 
-In `skills/job-application-tracker/dashboard-template.html`, find this line and put in your address:
+In `skills/job-application-tracker/dashboard-template.html`, set your address:
 
 ```js
-const SHARE_URL = 'https://job-tracker-stats.YOUR-NAME.workers.dev';
+const SHARE_URL = 'https://job-tracker-stats.yourname.workers.dev';
 ```
 
-Until you change it, the button is visible but its popup says sharing is not connected and cannot send. Leave `SHARE_MODE = 'live'` alone. The sample page in `examples/` is set to `'demo'` on purpose, so visitors can preview the button without sending fake data to your database.
+The shipped template already points at the maintainer's collector. Change it only if you run your own. Leave `SHARE_MODE = 'live'` alone. The sample page in `examples/` is set to `'demo'` on purpose, so visitors can preview the button without sending fake data.
 
 ## What it collects
 

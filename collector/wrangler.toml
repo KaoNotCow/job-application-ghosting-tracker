@@ -5,7 +5,7 @@ compatibility_date = "2026-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "job-tracker-stats"
-database_id = "PASTE-YOUR-DATABASE-ID-HERE"
+database_id = "cb6de81f-817d-4e11-b068-1ea3b2c84647"
 
 [vars]
 MIN_N = "5"            # a company only appears in public stats after this many applications

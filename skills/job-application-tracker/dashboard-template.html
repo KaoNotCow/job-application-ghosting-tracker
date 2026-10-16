@@ -969,9 +969,8 @@ dash.calc('companies', {
 
 
   // ---- Optional anonymous sharing -------------------------------------------
-  // Set SHARE_URL to your own collector (see collector/SETUP.md). While it still
-  // contains YOUR-NAME the button is visible but cannot send. SHARE_MODE 'demo' previews only.
-  const SHARE_URL = 'https://job-tracker-stats.YOUR-NAME.workers.dev';
+  // Set SHARE_URL to your own collector (see collector/SETUP.md). Leave it pointing at the shared collector, or set your own. SHARE_MODE 'demo' previews only.
+  const SHARE_URL = 'https://job-tracker-stats.kaosmith94.workers.dev';
   const SHARE_MODE = 'live';
   const OFFLINE = SHARE_MODE === 'live' && /YOUR-NAME/.test(SHARE_URL);
 
